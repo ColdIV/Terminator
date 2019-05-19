@@ -6,9 +6,10 @@ In diesen Ordner kommen die fertigen \*.exe Dateien, diese werden allerdings nic
 Hier kommen die HTML Dateien rein
 ### src/
 In diesen Ordner kommen die \*.cpp und \*.h Dateien
-Login mit post versteckt mitgeben oder sessions
+
 
 ## Todo
+- Login mit post versteckt mitgeben oder sessions
 - nach Datum sortieren
 - 2 Stukturen Login/Termin
 - Termine anlegen, löschen, suchen, ausgeben
