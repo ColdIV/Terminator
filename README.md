@@ -1,6 +1,14 @@
 # Terminator
+## Ordnerstruktur
+### cgi-bin/
+In diesen Ordner kommen die fertigen \*.exe Dateien, diese werden allerdings nicht hochgeladen und müssen Lokal selbst kompiliert werden.
+### htdocs/
+Hier kommen die HTML Dateien rein
+### src/
+In diesen Ordner kommen die \*.cpp und \*.h Dateien
 Login mit post versteckt mitgeben oder sessions
 
+## Todo
 - nach Datum sortieren
 - 2 Stukturen Login/Termin
 - Termine anlegen, löschen, suchen, ausgeben
