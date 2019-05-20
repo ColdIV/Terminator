@@ -35,11 +35,11 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - verknüpfung cgi - html
  
 ### joshua:
-- strukturen einzeln an datei anhängen / ändern
+- strukturen einzeln an datei anhängen / ändern (denke ist unnötig, evtl später)
 - vergleichfunktions für sortierung
 - cookies
 - ggf password hashen
-Erledigt (mehr oder weniger)
+Erledigt
 - Funktion Datei
-- string parser überprüfen ob key substring von str ist
+- string parser
   
