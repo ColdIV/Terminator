@@ -41,5 +41,5 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - ggf password hashen
 Erledigt (mehr oder weniger)
 - Funktion Datei
-- string parser
+- string parser überprüfen ob key substring von str ist
   
