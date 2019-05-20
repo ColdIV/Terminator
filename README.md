@@ -36,7 +36,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
  
 ### joshua:
 - vergleichfunktions für sortierung
-- cookies
+- cookies (https://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm)
 - strukturen einzeln an datei anhängen / ändern (denke ist unnötig, evtl später)
 - ~~ggf password hashen~~ (benötigt openssl, müsste man erst nachfragen)
 - ~~Funktion Datei~~
