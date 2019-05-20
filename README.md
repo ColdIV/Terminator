@@ -9,14 +9,17 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 
 
 ## Todo
-- Login mit post versteckt mitgeben oder sessions
+- Login mit sessions
 - nach Datum sortieren
 - 2 Stukturen Login/Termin
 - Termine anlegen, löschen, suchen, ausgeben
 - Passwort anlegen, ändern
+- input fehlerprüfung
+- html überarbeiten (ohne bootstrap)
 -----
 ## Voransgehensweise
-### HTML Grundgerüst egal
+### HTML Grundgerüst
+überarbeiten (ggf ohne bootstrap)
 
 ### CGI :
 - Formelemente durch string übertragen
@@ -25,11 +28,18 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 ## Aufgaben:
   
 ### Wassi:
+- appointments und nutzer brauchen eine id um die appointments den nutzern zuzuordnen
 - strukturen login / termin (liste)
 - login
 - reg/passs ändern 
+- verknüpfung cgi - html
  
 ### joshua:
+- strukturen einzeln an datei anhängen / ändern
+- vergleichfunktions für sortierung
+- cookies
+- ggf password hashen
+Erledigt (mehr oder weniger)
 - Funktion Datei
 - string parser
   
