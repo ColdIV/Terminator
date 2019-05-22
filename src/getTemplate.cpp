@@ -5,7 +5,7 @@
 /*
 	This function reads the content of a file and returns it as a string (char*)
 	char *fname			takes a string
-	returns					the content of a file as string or NULL
+	returns				the content of a file as string or NULL
 */
 char* getTemplate(char *fname) {
 	char *buffer;
