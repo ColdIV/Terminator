@@ -2,13 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <iostream>
-
-struct Test {
-	int num;
-};
-
+#include "fileFunctions.h"
 
 /*
 	This function reads array of structs from a file
@@ -79,75 +73,30 @@ void writeStructs(const char *fname, void *data, size_t num, size_t element_size
 	fclose(f);
 }
 
-int main(int argc, char** argv) {
-	/* 
-		This is an example program for the functions 
-		Remember to increase the array for writeStructs()
-	*/
-	char filename[] = "test.bin";
-	size_t amount = 0;
-	Test *arr = 0;
-	
-	// For readNthStruct()
-	Test *tmpArr = 0;
-	size_t n;
+/*
+	This function reads     the content of a file and returns it as a string (char*)
+	char *fname			    takes a string
+	returns				    the content of a file as string or NULL
+*/
+char* getTemplate(char *fname) {
+	char *buffer;
+	long size;
+	FILE *f = fopen(fname, "rb");
+	if (f != NULL) {
+		fseek(f, 0, SEEK_END);
+		size = ftell(f);
+		fseek(f, 0, SEEK_SET);
+		buffer = new char[size];
 
-	int choice = 0;
-	while (choice != 5) {
-		system("cls");
-        std::cout   << "Menu\n"
-                    << "-------------------\n"
-                    << "Write \t\t[1]\n"
-                    << "Read \t\t[2]\n"
-                    << "Read nth \t[3]\n"
-                    << "Show \t\t[4]\n"
-                    << "Exit \t\t[5]\n"
-                    << "-------------------\n"
-                    << "Choice: ";
-		std::cin >> choice;
-		switch (choice) {
-			case 1:
-				// Increase array by 1
-				arr = (Test*) realloc(arr, sizeof(Test) * (amount + 1));
+		if (buffer != NULL) {
+			fread(buffer, size, 1, f);
+			buffer[size] = '\0';
 
-				std::cout << "Enter a number: ";
-				std::cin >> arr[amount].num;
-			
-				amount++;
-				writeStructs(filename, arr, amount, sizeof(Test));
-				break;
-
-			case 2:
-				arr = (Test*) readStructs(filename, &amount, sizeof(Test));
-				break;
-
-			case 3:
-				n = 0;
-
-				std::cout << "Enter n: ";
-				std::cin >> n;
-
-				tmpArr = new Test[1];
-				tmpArr = (Test*) readNthStruct(filename, n, sizeof(Test));
-				
-				std::cout << "\nThe " << n << ". struct contains: " << tmpArr[0].num << std::endl;
-				system("pause");
-				break;
-
-			case 4:
-                std::cout   << "-------------------\n"
-                            << "Result:\n" 
-                            << std::endl;
-				for (size_t i = 0; i < amount; ++i) {
-					std::cout << "i: " << i << " num: " << arr[i].num << std::endl;
-				}
-				std::cout << "-------------------\n";
-				system("pause");
-
-			default:
-				break;
+			fclose(f);
+			return buffer;
 		}
 	}
-	
-	return 0;
+
+	fclose(f);
+	return NULL;
 }

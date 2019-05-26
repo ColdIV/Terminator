@@ -1,4 +1,5 @@
 #include <iostream>
+#include "formParser.h"
 
 /*
 	This functions extracts the value of a specific key
@@ -39,22 +40,4 @@ char* getValueOfKey(char *str, char *key) {
 	}
 
 	return NULL;
-}
-
-
-int main() {
-	char str[] = "?name3=test&name5=name&password=test2&name=test3&name2=test4";
-	char *tmpStr;
-
-	tmpStr = getValueOfKey(str, "name5");
-
-	if (tmpStr == NULL) {
-		std::cout << "Error! Key not found." << std::endl;
-	}
-	else {
-		std::cout << "Result: " << tmpStr << std::endl;
-	}
-
-	system("pause");
-	return 0;
 }
