@@ -6,9 +6,9 @@
 
 /*
 	This function reads array of structs from a file
-	const char *fname           takes a filename
-	size_t *num                 takes the address of a variable which will then hold the amount of data read
-	size_t element_size         takes the sizeof the struct
+	const char *fname       takes a filename
+	size_t *num             takes the address of a variable which will then hold the amount of data read
+	size_t element_size     takes the sizeof the struct
 
 	ATTENTION: This function returns void*, to get the struct you will have to convert the type
 	Example:
@@ -36,9 +36,9 @@ void* readStructs(const char *fname, size_t *num, size_t element_size) {
 
 /*
 	This function reads the nth struct from a file
-	const char *fname           takes a filename
-	size_t n                    takes the position of the desired struct
-	size_t element_size         takes the sizeof the struct
+	const char *fname       takes a filename
+	size_t n                takes the position of the desired struct
+	size_t element_size     takes the sizeof the struct
 
 	ATTENTION: This function returns void*, to get the struct you will have to convert the type
 	The target array should only hold one element as this function only returns an array with a length of 1
@@ -75,8 +75,8 @@ void writeStructs(const char *fname, void *data, size_t num, size_t element_size
 
 /*
 	This function reads     the content of a file and returns it as a string (char*)
-	char *fname			    takes a string
-	returns				    the content of a file as string or NULL
+	char *fname             takes a string
+	returns                 the content of a file as string or NULL
 */
 char* getTemplate(char *fname) {
 	char *buffer;
