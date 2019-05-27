@@ -6,7 +6,7 @@
 
 /*
 	This functions extracts the value of a specific key
-	char *str		takes a string
+	const char *str takes a string
 	char *key		takes a string
 	char separator  takes a char or nothing (default is '&')
 	returns 		a string or NULL if key could not be found
@@ -21,51 +21,35 @@
 
 	Note: Those are NOT secure credentials!
 */
-char* getValueOfKey(char *str, char *key, char separator = '&') {
+char* getValueOfKey(const char *str, char *key, char separator) {
 	int end = 0;
-	
-	// tmpStr will be used to return a part of our input string
-	// so we won't change the original
 	char *tmpStr;
-
-	// Iterate through string till current char matches with first char of the key 
-	// (or end of string is reached)
-	while (*str && *str != *key) str++;
-
 	char *tmpKey = key;
 
-	// Loop as long as string and key match and end is not reached yet
+	while (*str && *str != *key) str++;
+	
 	while (*tmpKey && *str && *str == *tmpKey) {
-		// Move on to the next character of the string and key
 		str++;
 		tmpKey++;
 
-		// If end of key is reached and string is at '='
 		if (!*tmpKey && *str == '=') {
-			// Move to next character of string
 			str++;
 			
-			// Find the end of the word (either end of string or at the next '&')
 			for (end = 0; *(str + end) && *(str + end) != separator; end++);
 
-			// Set end of string to '\0' (to make sure that the string ends here)
-			// We will have to do this with a copy of the string so we won't change the original
 			tmpStr = new char[strlen(str)];
 			strcpy(tmpStr, str);
 			tmpStr[end] = '\0';
 			
-			// return tmpStr (which now is only the value)
 			return tmpStr;
 		}
 
-		// If the key we found wasn't correct we reset the key and search for the next match
 		if ((!*tmpKey && *str != '=') || (*str != *tmpKey)) {
 			tmpKey = key;
 			while (*str && *str != *key) str++;
 		}
 	}
 
-	// Key not in string, NULL is returned
 	return NULL;
 }
 

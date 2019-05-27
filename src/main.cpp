@@ -83,7 +83,7 @@ void formFunctionsExample() {
 	*/
 
 	// For parser
-	char str[] = "?name1=test1&name2=test2&password=pass&name=test&name3=test3&name4=&name5=";
+	char str[] = "?vorname=hans&name1=test1&name2=test2&password=pass&name=test&name3=test3&name4=&name5=";
 	char *tmpStr;
 	// Only for input, usually you can just set the string in here like: *find = "name1";
 	char *find = new char[100];
