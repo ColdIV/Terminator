@@ -35,9 +35,10 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - verknüpfung cgi - html
  
 ### joshua:
-- vergleichfunktions für sortierung
+- vergleichfunktions für sortierung (getTimestamp ist schon da, also kaum noch aufwand)
 - cookies (https://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm)
-- strukturen einzeln an datei anhängen / ändern (denke ist unnötig, evtl später)
+- ~~strukturen einzeln an datei anhängen / ändern (denke ist unnötig, evtl später)~~ ist egal!
+- getTimestamp und ggf formParser in helper.h auslagern
 - ~~ggf password hashen~~ (benötigt openssl, müsste man erst nachfragen)
 - ~~Funktion Datei~~
 - ~~string parser~~
