@@ -8,6 +8,7 @@
 	This functions extracts the value of a specific key
 	char *str		takes a string
 	char *key		takes a string
+	char separator  takes a char or nothing (default is '&')
 	returns 		a string or NULL if key could not be found
 
 	Example:
@@ -15,18 +16,17 @@
 	// -> returns "Admin"
 	getValueOfKey("?name=Admin&password=abc123", "password")
 	// -> returns "abc123"
+	getValueOfKey("name=test; password=test_pass;", "name", ';')
+	// -> returns "test"
 
 	Note: Those are NOT secure credentials!
 */
-char* getValueOfKey(char *str, char *key) {
+char* getValueOfKey(char *str, char *key, char separator = '&') {
 	int end = 0;
 	
 	// tmpStr will be used to return a part of our input string
 	// so we won't change the original
 	char *tmpStr;
-
-	// Skip first character (It's always a '?')
-	str++;
 
 	// Iterate through string till current char matches with first char of the key 
 	// (or end of string is reached)
@@ -46,7 +46,7 @@ char* getValueOfKey(char *str, char *key) {
 			str++;
 			
 			// Find the end of the word (either end of string or at the next '&')
-			for (end = 0; *(str + end) && *(str + end) != '&'; end++);
+			for (end = 0; *(str + end) && *(str + end) != separator; end++);
 
 			// Set end of string to '\0' (to make sure that the string ends here)
 			// We will have to do this with a copy of the string so we won't change the original
@@ -99,4 +99,16 @@ int compare(const void *p1, const void *p2) {
 	if (*pa < *pb) return -1;
 	if (*pa > *pb) return 1;
 	return 0;
+}
+
+
+/*
+	This functions sets a cookie
+	char *key       takes a string as key
+	char *value     takes a string as value
+
+	ATTENTION: Cookies have to be set before any other output!
+*/
+void setCookie(char *key, char *value) {
+	std::cout << "Set-Cookie:" << key << " = " << value << ";\r\n";
 }
