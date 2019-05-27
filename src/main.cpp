@@ -1,6 +1,6 @@
 #include <iostream>
 #include "fileFunctions.h"
-#include "formParser.h"
+#include "formFunctions.h"
 
 struct Test {
 	int num;
@@ -77,21 +77,76 @@ void fileFunctionsExample() {
 	}
 }
 
-void formParserExample() {
+void formFunctionsExample() {
 	/*
-		This is an example program for the formParser functions
+		This is an example program for the form functions
 	*/
-	char str[] = "?name3=test&name5=name&password=test2&name=test3&name2=test4";
+
+	// For parser
+	char str[] = "?name1=test1&name2=test2&password=pass&name=test&name3=test3&name4=&name5=";
 	char *tmpStr;
-	char find[] = "name5";
+	// Only for input, usually you can just set the string in here like: *find = "name1";
+	char *find = new char[100];
 
-	tmpStr = getValueOfKey(str, find);
+	// For timestamp
+	char date1[] = "2011-04-01";
+	char *date2 = new char[strlen(date1)];
+	time_t t1;
+	time_t t2;
 
-	if (tmpStr == NULL) {
-		std::cout << "Error! Key not found." << std::endl;
-	}
-	else {
-		std::cout << "Result: " << tmpStr << std::endl;
+	int choice = 0;
+	while (choice != 3) {
+		system("cls");
+		std::cout << "Menu\n"
+			<< "-------------------\n"
+			<< "Parser \t\t[1]\n"
+			<< "Timestamp \t[2]\n"
+			<< "Exit \t\t[3]\n"
+			<< "-------------------\n"
+			<< "Choice: ";
+		std::cin >> choice;
+		std::cout << "-------------------\n";
+
+		switch (choice) {
+			case 1:
+				std::cout << "String: " << str << std::endl;
+				std::cout << "Find: ";
+				std::cin >> find;
+
+				tmpStr = getValueOfKey(str, find);
+
+				std::cout << "-------------------\n";
+
+				if (tmpStr == NULL) {
+					std::cout << "Error! Key not found." << std::endl;
+				}
+				else {
+					std::cout << "Result: " << tmpStr << std::endl;
+				}
+
+				std::cout << "-------------------\n";
+				system("pause");
+				break;
+			case 2:
+				std::cout << "Date: " << date1 << std::endl;
+				std::cout << "Compare with: ";
+				std::cin >> date2;
+
+				t1 = getTimestamp(date1);
+				t2 = getTimestamp(date2);
+
+				std::cout << "-------------------\n" 
+						  << "Result: ";
+				if (t1 > t2) std::cout << date1 << " is bigger!";
+				else std::cout << date2 << " is bigger!";
+
+				std::cout << "\n-------------------"
+						  << std::endl;
+				system("pause");
+				break;
+			default:
+				break;
+		}
 	}
 
 	system("pause");
@@ -105,12 +160,13 @@ int main(int argc, char** argv) {
 			<< "-------------------\n"
 			<< "Choose program to run:\n"
 			<< "fileFunctions \t[1]\n"
-			<< "formParser \t[2]\n"
-			<< std::endl;
+			<< "formFunctions \t[2]\n"
+			<< "-------------------\n"
+			<< "Choice: ";
 		std::cin >> cho;
 
 		if (cho == 1) fileFunctionsExample();
-		else if (cho == 2) formParserExample();
+		else if (cho == 2) formFunctionsExample();
 		else cho = 0;
 		system("cls");
 	}
