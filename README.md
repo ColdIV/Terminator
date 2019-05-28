@@ -40,7 +40,8 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - ~~cookies (https://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm)~~
 - ~~strukturen einzeln an datei anhängen / ändern (denke ist unnötig, evtl später)~~ ist egal!
 - ~~getTimestamp und ggf formParser in helper.h auslagern~~
-- ggf password hashen (benötigt openssl, müsste man erst nachfragen)
+- add writeSingleStruct() (und namenändern), mit seek end kann man am ende anhängen
+- ggf password hashen (benötigt openssl, wäre ok) ggf eigene verschlüsselung (klingt als wäre das bonus)
 - ~~Funktion Datei~~
 - ~~string parser~~
   
