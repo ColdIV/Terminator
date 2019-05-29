@@ -7,7 +7,7 @@
 /*
 	This functions extracts the value of a specific key
 	const char *str     takes a string
-	char *key		    takes a string
+	char *key           takes a string
 	char separator      takes a char or nothing (default is '&')
 	returns             a string or NULL if key could not be found
 
