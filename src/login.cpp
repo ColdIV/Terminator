@@ -1,51 +1,57 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "fileFunctions.h"
+#include "formFunctions.h"
 
 using namespace std;
 
-struct Account{
-    char user[100+1];
-    char password[100+1];
+struct Account {
+    char *user;
+    char *password;
     int id;
 };
-struct Appointment{
-    char date[8+1];
-    char time[5+1];
-    char description[100+1];
+struct Appointment {
+    char *date;
+    char *time;
+    char *description;
+	int id;
 };
 
-int main()
-{   int i =0;
-    struct Account accounts[3];
+int login() {   
+	int i =0;
+    Account account;
 
-    strcpy(accounts[0].user,"user");
-    strcpy(accounts[0].password,"password");
-    strcpy(accounts[1].user,"user1");
-    strcpy(accounts[1].password,"password1");
-    strcpy(accounts[2].user,"user2");
-    strcpy(accounts[2].password,"password2");
+	char *data = "name=wassi&password=1234";
+	
+	account.user = getValueOfKey(data, "name");
+	account.password = getValueOfKey(data, "password");
 
-    /*Passwort prüfung erste "Vorlage"*/
-   /* bool accountsinSuccess = false;
-    char dummy[100+1];
-    do{
-        cout << "Username:\n";
-        cin >> accounts.user;
-        cout << "Password:\n";
-        cin >> accounts.password;
-
-        if(accounts.user == "user" && accounts.password == "password" ){
-            cout << "Die Anmeldung war erfolgreich.\n";
-            bool accountsinSuccess = true;
-            break;
-        }
-        else{
-            cout << "Username or password incorrect!\n";
-            cout << "Please try to accountsin again.\n";
-        }
-    }while(!accountsinSuccess);*/
+	if (validateLogin(account.user, account.password)){
+		setCookie("name", account.user);
+		setCookie("password", account.password);
+		// Ausgabe des Menüs
+		std::cout << getTemplate("../htdocs/menue.html");
+	}
+	else {
+		// Fehlermeldung, Login falsch
+		std::cout << getTemplate("../htdocs/login-error.html");
+	}
 
     return 0;
+}
+
+bool validateLogin(char *user, char *password){
+	Account *accounts;
+	size_t size = 0;
+	accounts = (Account*) readStructs("accounts.bin", &size, sizeof(Account));
+	
+	for (int i = 0; i < size; i++){
+		if (accounts[i].user == user && accounts[i].password){
+			return true;
+		}
+	}
+	return false;
 }
