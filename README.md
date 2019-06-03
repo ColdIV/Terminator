@@ -9,33 +9,26 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 
 
 ## Todo
-- Login mit sessions
-- nach Datum sortieren
-- 2 Stukturen Login/Termin
-- Termine anlegen, löschen, suchen, ausgeben
-- Passwort anlegen, ändern
+- ~~Login mit sessions~~
+- nach Datum sortieren (uhrzeit fehlt)
+- Termine anlegen, löschen, suchen, ausgeben, ändern
+- Registrierung
+- Passwort ändern
 - input fehlerprüfung
-- html überarbeiten (ohne bootstrap)
------
-## Voransgehensweise
-### HTML Grundgerüst
-überarbeiten (ggf ohne bootstrap)
-
-### CGI :
-- Formelemente durch string übertragen
-- Dateioperation
   
 ## Aufgaben:
   
 ### Wassi:
-- appointments und nutzer brauchen eine id um die appointments den nutzern zuzuordnen
-- strukturen login / termin (liste)
-- login
-- reg/passs ändern 
-- verknüpfung cgi - html
+- ~~appointments und nutzer brauchen eine id um die appointments den nutzern zuzuordnen~~
+- ~~strukturen login / termin (liste)~~
+- ~~login~~
+- reg/passs ändern
+- terminverwaltung
 - html templates
  
 ### joshua:
+- sortieren (uhrzeit fehlt)
+- cpp zu schönen header dateien machen (login, )
 - ~~vergleichfunktions für sortierung (getTimestamp ist schon da, also kaum noch aufwand)~~
 - ~~cookies (https://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm)~~
 - ~~strukturen einzeln an datei anhängen / ändern (denke ist unnötig, evtl später)~~ ist egal!
