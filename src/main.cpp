@@ -1,9 +1,14 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include "fileFunctions.h"
 #include "formFunctions.h"
 
 struct Test {
 	int num;
+};
+
+struct Addr {
+	char name[200];
 };
 
 void fileFunctionsExample() {
@@ -154,6 +159,27 @@ void formFunctionsExample() {
 
 int main(int argc, char** argv) {
 	int cho = 0;
+
+	//Addr *addr = new Addr[1];
+	//strcpy(addr[0].name, "dies ist kein name weil es zu lang ist\0");
+
+	//writeStructs("test.txt", addr, 1, sizeof(Addr));
+	//
+	//size_t amount = 1;
+	//Addr *res = new Addr[amount];
+	//res = (Addr*)readStructs("test.txt", &amount, sizeof(Addr));
+
+	//Addr *neu = new Addr[++amount];
+	//strcpy(neu[0].name, res[0].name);
+	//strcpy(neu[1].name, "neuer text nur viel langer!\0");
+	//writeStructs("test.txt", neu, 2, sizeof(Addr));
+	//
+	//res = new Addr[amount];
+	//res = (Addr*)readStructs("test.txt", &amount, sizeof(Addr));
+
+	//std::cout << res[0].name << std::endl;
+	//std::cout << res[1].name << std::endl;
+	//system("pause");
 
 	while (cho == 0) {
 		std::cout << "Examples\n"
