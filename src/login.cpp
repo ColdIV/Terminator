@@ -13,12 +13,6 @@ struct Account {
     char *password;
     int id;
 };
-struct Appointment {
-    char *date;
-    char *time;
-    char *description;
-	int id;
-};
 
 int login() {   
 	int i =0;
@@ -32,7 +26,7 @@ int login() {
 	if (validateLogin(account.user, account.password)){
 		setCookie("name", account.user);
 		setCookie("password", account.password);
-		// Ausgabe des Menüs
+		// Ausgabe des MenÃ¼s
 		std::cout << getTemplate("../htdocs/menue.html");
 	}
 	else {
