@@ -1,0 +1,18 @@
+body{
+background-color: #fff; 
+background-image:
+linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
+linear-gradient(#eee .1em, transparent .1em);
+background-size: 100% 1.2em;
+/* https://leaverou.github.io/css3patterns/# */
+}
+
+div.row{
+  width:100%;
+}
+div.col-4{
+  min-width: 56%;
+}
+.card{
+  border-width: 2px;
+}
