@@ -31,7 +31,7 @@ int login() {
 	}
 	else {
 		// Fehlermeldung, Login falsch
-		std::cout << getTemplate("../htdocs/login-error.html");
+		std::cout << getTemplate("../htdocs/login.html");
 	}
 
     return 0;
