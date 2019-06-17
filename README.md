@@ -15,6 +15,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - Registrierung
 - Passwort ändern
 - input fehlerprüfung
+- HTML Terminanzeige sieht bisschen kaputt aus
   
 ## Aufgaben:
   
