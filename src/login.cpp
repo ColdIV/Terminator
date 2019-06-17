@@ -53,10 +53,11 @@ bool validateLogin(char *user, char *password){
 	size_t *size = 0;
 	accounts = (Account*) readStructs("accounts.bin", size, sizeof(Account));
 
-	for (int i = 0; i < size; i++){
-		if (accounts[i].user == user && accounts[i].password == password){
+	for (int i = 0; i < (int)size; i++){
+		if (!strcmp(accounts[i].user, user) && !strcmp(accounts[i].password, password)){
 			return true;
 		}
 	}
+
 	return false;
 }
