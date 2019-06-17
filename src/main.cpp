@@ -2,6 +2,7 @@
 #include <iostream>
 #include "fileFunctions.h"
 #include "formFunctions.h"
+#include <string.h>
 
 //struct Test {
 //	int num;
@@ -175,8 +176,9 @@ int main(int argc, char** argv) {
 	// Get GET and POST request data
 	char *getData = getenv("QUERY_STRING");
 	char *postData = new char[contentLen];
-	if (contentLen > 0)
+	if (contentLen > 0) {
 		std::cin >> postData;
+	}
 
 	// Get Cookie data
 	char *cookieData = getenv("HTTP_COOKIE");
@@ -187,7 +189,7 @@ int main(int argc, char** argv) {
 
 	// Check if user logged in, if yes: create user, else: route to register
 	User user = { 0 };
-	if (page != "register" && page != "login" && getValueOfKey(cookieData, (char*)"name", ';')) {
+	if (page != "register" && page != "login" && strcmp(getValueOfKey(cookieData, (char*)"name", ';'), "") != 0) {
 		// Create user
 		// @TODO: Check if data is valid, maybe some security stuff. No clue, need sleep.
 		user.id = atoi(getValueOfKey(cookieData, (char*)"id", ';'));
@@ -201,14 +203,59 @@ int main(int argc, char** argv) {
 
 	
 	// Routing
-	if (page == "login" || (!user.loggedIn && page != "register")) {
-
-	} else if (page == "register") {
-
+	if (!strcmp(page, "login") || (!user.loggedIn && strcmp(page, "register") != 0)) {
+		if (!contentLen) {
+			// Show Login HTML
+		} else {
+			// Handle Login (Login should set cookie)
+			if (login(postData, "accounts.txt")) {
+				// Login successfull
+				// Show menu
+			} else {
+				// Login failed, show error
+			}
+		}
+	} else if (!strcmp(page, "register")) {
+		if (!contentLen) {
+			// Show Register HTML
+		}
+		else {
+			// Handle Register
+			if (registerUser(postData, "accounts.txt")) {
+				// Register successfull
+				// Auto-Login user
+				// Show Menü
+			}
+			else {
+				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
+			}
+		}
+	} else if (!strcmp(page, "appointments")) {
+		if (!contentLen) {
+			// Show Appointments HTML
+		} else {
+			// Handle appointments postData (add, edit, delete?, maybe add more "pages" for that)
+			// Add Appointment
+			if (handleAppointment) {
+				// Success, show appointments
+			} else {
+				// Failed, show error
+			}
+		}
+	}
+	else if (!strcmp(page, "menu")) {
+		// Show Menu
+	} else if (!strcmp(page, "logout")) {
+		setCookie("name", "");
+		// Show Login
 	} else {
 		// Error 404 (Lazy, so just back to menu / login)
 	}
 	
+
+
+
+
 	//int cho = 0;
 
 	// SOME TESTS
