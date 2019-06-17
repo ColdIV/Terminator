@@ -17,7 +17,7 @@ struct Account {
 int login() {   
 	int i =0;
     Account account;
-
+	char *reghtml = getenv("Key");
 	char *data = "name=wassi&password=1234";
 	
 	account.user = getValueOfKey(data, "name");
@@ -28,6 +28,8 @@ int login() {
 		setCookie("password", account.password);
 		// Ausgabe des Menüs
 		std::cout << getTemplate("../htdocs/menue.html");
+	}else if(*reghtml === "../htdocs/reg.html"){
+		//reg function
 	}
 	else {
 		// Fehlermeldung, Login falsch
