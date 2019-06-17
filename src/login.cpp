@@ -28,8 +28,17 @@ int login() {
 		setCookie("password", account.password);
 		// Ausgabe des Menüs
 		std::cout << getTemplate("../htdocs/menue.html");
-	}else if(*reghtml === "../htdocs/reg.html"){
-		//reg function
+	}
+	else if(*reghtml === "../htdocs/reg.html"){
+		Account *accounts;
+		size_t size = 0;
+		accounts = (Account*) writeStructs("accounts.bin",&data, &size, sizeof(Account));
+	
+			for (int i = 0; i < size; i++){
+				if (accounts[i].user == user && accounts[i].password){
+				return true;
+				}
+			}	
 	}
 	else {
 		// Fehlermeldung, Login falsch
