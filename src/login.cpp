@@ -29,7 +29,7 @@ int login() {
 		// Ausgabe des Menüs
 		std::cout << getTemplate("../htdocs/menue.html");
 	}
-	else if(*reghtml === "../htdocs/reg.html"){
+	else if(*reghtml == "../htdocs/reg.html"){
 		Account *accounts;
 		size_t size = 0;
 		accounts = (Account*) writeStructs("accounts.bin",&data, &size, sizeof(Account));
