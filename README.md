@@ -22,9 +22,9 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - ~~appointments und nutzer brauchen eine id um die appointments den nutzern zuzuordnen~~
 - ~~strukturen login / termin (liste)~~
 - ~~login~~
-- reg/passs ändern
+- reg(done)/passs ändern
 - terminverwaltung
-- html templates
+- html templates(done/erweiterbar)
  
 ### joshua:
 - sortieren (uhrzeit fehlt)
