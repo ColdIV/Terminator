@@ -32,7 +32,7 @@ int login(char* user, char* password) {
 	else if((char*)*reghtml == (char*)"../htdocs/reg.html"){
 		Account *accounts;
 		size_t size = 0;
-		writeStructs("accounts.bin",&data, size, sizeof(Account));
+		writeStructs("accounts.bin", &data, size, sizeof(Account));
 
 			for (size_t i = 0; i < size; i++){
 				if (accounts[i].user == user && accounts[i].password == password){
@@ -50,10 +50,10 @@ int login(char* user, char* password) {
 
 bool validateLogin(char *user, char *password){
 	Account *accounts;
-	size_t *size = 0;
-	accounts = (Account*) readStructs("accounts.bin", size, sizeof(Account));
+	size_t size = 0;
+	accounts = (Account*) readStructs("accounts.bin", &size, sizeof(Account));
 
-	for (size_t i = 0; i < (int)size; i++){
+	for (size_t i = 0; i < size; i++){
 		if (!strcmp(accounts[i].user, user) && !strcmp(accounts[i].password, password)){
 			return true;
 		}
