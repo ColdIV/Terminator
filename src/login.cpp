@@ -34,7 +34,7 @@ int login(char* user, char* password) {
 		size_t size = 0;
 		writeStructs("accounts.bin",&data, size, sizeof(Account));
 
-			for (int i = 0; i < size; i++){
+			for (size_t i = 0; i < size; i++){
 				if (accounts[i].user == user && accounts[i].password == password){
 				return true;
 				}
@@ -53,7 +53,7 @@ bool validateLogin(char *user, char *password){
 	size_t *size = 0;
 	accounts = (Account*) readStructs("accounts.bin", size, sizeof(Account));
 
-	for (int i = 0; i < (int)size; i++){
+	for (size_t i = 0; i < (int)size; i++){
 		if (!strcmp(accounts[i].user, user) && !strcmp(accounts[i].password, password)){
 			return true;
 		}
