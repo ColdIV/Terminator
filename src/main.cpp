@@ -2,6 +2,7 @@
 #include <iostream>
 #include "fileFunctions.h"
 #include "formFunctions.h"
+#include "accountFunctions.h"
 #include <string.h>
 
 struct User {
@@ -52,12 +53,12 @@ int main(int argc, char** argv) {
 	// Routing
 	if (!strcmp(page, "login") || (!user.loggedIn && strcmp(page, "register") != 0)) {
 		if (!contentLen) {
-			// Show Login HTML
+			std::cout << getTemplate((char*)"../htdocs/login.html");
 		} else {
 			// Handle Login (Login should set cookie)
-			if (login(postData, "accounts.txt")) {
+			if (login("accounts.bin", postData)) {
 				// Login successfull
-				// Show menu
+				std::cout << getTemplate((char*)"../htdocs/menue.html");
 			} else {
 				// Login failed, show error
 			}
@@ -68,10 +69,10 @@ int main(int argc, char** argv) {
 		}
 		else {
 			// Handle Register
-			if (registerUser(postData, "accounts.txt")) {
+			if (registerUser("accounts.bin", postData)) {
 				// Register successfull
 				// Auto-Login user
-				// Show Menü
+				std::cout << getTemplate((char*)"../htdocs/menue.html");
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
@@ -91,10 +92,10 @@ int main(int argc, char** argv) {
 		}
 	}
 	else if (!strcmp(page, "menu")) {
-		// Show Menu
+		std::cout << getTemplate((char*)"../htdocs/menue.html");
 	} else if (!strcmp(page, "logout")) {
 		setCookie((char*)"name", (char*)"");
-		// Show Login
+		std::cout << getTemplate((char*)"../htdocs/login.html");
 	} else {
 		// Error 404 (Lazy, so just back to menu / login)
 	}
