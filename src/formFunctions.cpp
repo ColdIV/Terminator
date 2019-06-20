@@ -36,6 +36,7 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 		do {
 			while (*str && *str != separator) str++;
 			str++;
+			if (separator == ';') str++;
 		} while (*str && *str != *tmpKey);
 	}
 
@@ -61,6 +62,7 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 				do {
 					while (*str && *str != separator) str++;
 					str++;
+					if (separator == ';') str++;
 				} while (*str && *str != *tmpKey);
 			}
 		}
