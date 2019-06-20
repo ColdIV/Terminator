@@ -11,13 +11,12 @@ struct User {
 	bool loggedIn;
 };
 
-
 int main(int argc, char** argv) {
 	/*
 		Main Program, which should handle the routing and call the correct functions / templates 
 		GET data will be used for routing (it will tell us which template to send and which functions to call)
 	*/
-		
+
 	// Get length of POST data
 	char *tmpContentLen = getenv("CONTENT_LENGTH");
 	int contentLen;
@@ -29,9 +28,6 @@ int main(int argc, char** argv) {
 
 	// Get GET and POST request data
 	char *getData = getenv("QUERY_STRING");
-	if (getData == NULL) {
-		getData = (char*)"page=login";
-	}
 
 	char *postData = (char*) malloc(contentLen * sizeof(char));
 	if (contentLen > 0 && postData != NULL) {
@@ -52,15 +48,28 @@ int main(int argc, char** argv) {
 	
 	// Template
 	char *htmlTemplate = NULL;
-	
+
 	// Get page from getData
+	// @TODO: Why exactly doesn't tmpPage show the correct value? (std::cout << tmpPage; shows rubbish, page works.)
 	char page[100];
-	strcpy(page, getValueOfKey(getData, (char*)"page"));
+	char *tmpPage = NULL;
+	tmpPage = getValueOfKey(getData, (char*)"page");
+	if (tmpPage == NULL) {
+		strcpy(page, "login");
+	} else {
+		strcpy(page, tmpPage);
+	}
 
 	// Check if user logged in, if yes: create user, else: route to register
 	User user = { 0 };
 	char cookieUsername[50];
-	strcpy(cookieUsername, getValueOfKey(cookieData, (char*)"name", ';'));
+	char *tmpCookieUsername = NULL;
+	tmpCookieUsername = getValueOfKey(cookieData, (char*)"name", ';');
+	if (tmpCookieUsername == NULL) {
+		strcpy(cookieUsername, "");
+	} else {
+		strcpy(cookieUsername, tmpCookieUsername);
+	}
 
 	if (strcmp(page, "register") != 0 && (page, "login") != 0 && strcmp(cookieUsername, "") != 0) {
 		// Create user
@@ -76,16 +85,15 @@ int main(int argc, char** argv) {
 		// route to "register" or "login", will happen below
 	// }
 
-	
 	// Routing
 	if (!strcmp(page, "login") || (!user.loggedIn && strcmp(page, "register") != 0)) {
 		if (!contentLen) {
-			htmlTemplate = getTemplate("../htdocs/login.html");
+			htmlTemplate = getTemplate("templates/login.html");
 		} else {
 			// Handle Login (Login should set cookie)
 			if (login("accounts.bin", postData)) {
 				// Login successfull
-				htmlTemplate = getTemplate("../htdocs/menue.html");
+				htmlTemplate = getTemplate("templates/menue.html");
 			} else {
 				// Login failed, show error
 			}
@@ -99,7 +107,7 @@ int main(int argc, char** argv) {
 			if (registerUser("accounts.bin", postData)) {
 				// Register successfull
 				// Auto-Login user
-				htmlTemplate = getTemplate("../htdocs/menue.html");
+				htmlTemplate = getTemplate("templates/menue.html");
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
@@ -119,13 +127,13 @@ int main(int argc, char** argv) {
 		}
 	}
 	else if (!strcmp(page, "menu")) {
-		htmlTemplate = getTemplate("../htdocs/menue.html");
+		htmlTemplate = getTemplate("templates/menue.html");
 	} else if (!strcmp(page, "logout")) {
 		setCookie("name", (char*)"");
-		htmlTemplate = getTemplate("../htdocs/login.html");
+		htmlTemplate = getTemplate("templates/login.html");
 	} else {
 		// Error 404 (Lazy, so just back to login)
-		htmlTemplate = getTemplate("../htdocs/login.html");
+		htmlTemplate = getTemplate("templates/login.html");
 	}
 
 	// Show HTML Template
