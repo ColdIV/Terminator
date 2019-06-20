@@ -112,8 +112,9 @@ char* getTemplate(const char *fname) {
 			fclose(f);
 			return buffer;
 		}
+
+		fclose(f);
 	}
 
-	fclose(f);
 	return NULL;
 }
