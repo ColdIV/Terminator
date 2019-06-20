@@ -5,6 +5,7 @@
 #include "fileFunctions.h"
 #include "formFunctions.h"
 #include "accountFunctions.h"
+#include <iostream>
 
 /*
 	This function checks if login credentials are correct
@@ -88,7 +89,7 @@ bool createAccount(const char *fname, char *user, char *password) {
 		strcpy(accounts[size].password, password);
 	}
 
-	writeStructs(fname, accounts, size, sizeof(Account));
+	writeStructs(fname, accounts, size + 1, sizeof(Account));
 
 	free(accounts);
 
@@ -103,20 +104,30 @@ bool createAccount(const char *fname, char *user, char *password) {
 */
 bool login(const char *fname, char *data) {
 	char user[50];
+	char *tmpUser;
 	char password[50];
-	strcpy(user, getValueOfKey(data, (char*)"name"));
-	strcpy(password, getValueOfKey(data, (char*)"password"));
+	char *tmpPassword;
+	tmpUser = getValueOfKey(data, (char*)"username");
+	tmpPassword = getValueOfKey(data, (char*)"password");
+
+	if (tmpUser == NULL || tmpPassword == NULL) {
+		return false;
+	}
+
+	strcpy(user, tmpUser);
+	strcpy(password, tmpPassword);
 
 	int userID = validateLogin(fname, user, password);
-	char *id = NULL;
+	char id[100];
 	
 	if (userID) {
-		sprintf(id, "%d", --userID);
+		userID--;
+		//sprintf(id, "%d", userID);
+		_itoa(userID, id, 10);
 		setCookie("id", id);
 		setCookie("name", user);
 		return true;
 	}
-	
 	return false;
 }
 
@@ -145,6 +156,8 @@ bool registerUser(const char *fname, char *data) {
 	strcpy(user, tmpUser);
 	strcpy(password, tmpPassword);
 	strcpy(repeatPassword, tmpRepeatPassword);
+
+
 
 	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1) {
 		return false;
