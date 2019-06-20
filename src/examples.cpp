@@ -4,6 +4,11 @@
 #include "formFunctions.h"
 #include <string.h>
 
+/*
+	NOT UP TO DATE!
+	WILL REMOVE SOON
+*/
+
 struct Test {
 	int num;
 };
@@ -158,7 +163,7 @@ void formFunctionsExample() {
 	system("pause");
 }
 
-int main(int argc, char** argv) {
+int mainEXAMPLE(int argc, char** argv) {
 	int cho = 0;
 
 	// SOME TESTS
