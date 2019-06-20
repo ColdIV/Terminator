@@ -120,7 +120,7 @@ bool registerUser(const char *fname, char *data) {
 	char user[50];
 	char password[50];
 	char repeatPassword[50];
-	strcpy(user, getValueOfKey(data, (char*)"name"));
+	strcpy(user, getValueOfKey(data, (char*)"username"));
 	strcpy(password, getValueOfKey(data, (char*)"password"));
 	strcpy(repeatPassword, getValueOfKey(data, (char*)"repeatPassword"));
 

@@ -101,6 +101,7 @@ int main(int argc, char** argv) {
 	} else if (!strcmp(page, "register")) {
 		if (!contentLen) {
 			// Show Register HTML
+			htmlTemplate = getTemplate("templates/register.html");
 		}
 		else {
 			// Handle Register
@@ -138,9 +139,12 @@ int main(int argc, char** argv) {
 
 	// Show HTML Template
 	std::cout << "Content-type:text/html\r\n\r\n";
-	if (htmlTemplate == NULL) {
+	char *htmlHead = getTemplate("templates/head.html");
+
+	if (htmlHead == NULL || htmlTemplate == NULL) {
 		std::cout << "Error! Could not find template files." << std::endl;
 	} else {
+		std::cout << htmlHead << std::endl;
 		std::cout << htmlTemplate;
 	}
 	
