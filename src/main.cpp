@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 	// Get GET and POST request data
 	char *getData = getenv("QUERY_STRING");
 
-	char *postData = (char*) malloc(contentLen * sizeof(char));
+	char *postData = (char*) malloc((contentLen + 1) * sizeof(char));
 	if (contentLen > 0 && postData != NULL) {
 		std::cin >> postData;
 	} else {
@@ -85,9 +85,10 @@ int main(int argc, char** argv) {
 		// route to "register" or "login", will happen below
 	// }
 
+
 	// Routing
-	if (!strcmp(page, "login") || (!user.loggedIn && strcmp(page, "register") != 0)) {
-		if (!contentLen) {
+	if (strcmp(page, "login") == 0 || (!user.loggedIn && strcmp(page, "register") != 0)) {
+		if (contentLen == 0) {
 			htmlTemplate = getTemplate("templates/login.html");
 		} else {
 			// Handle Login (Login should set cookie)
@@ -98,8 +99,8 @@ int main(int argc, char** argv) {
 				// Login failed, show error
 			}
 		}
-	} else if (!strcmp(page, "register")) {
-		if (!contentLen) {
+	} else if (strcmp(page, "register") == 0) {
+		if (contentLen == 0) {
 			// Show Register HTML
 			htmlTemplate = getTemplate("templates/register.html");
 		}
@@ -114,8 +115,8 @@ int main(int argc, char** argv) {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
 			}
 		}
-	} else if (!strcmp(page, "appointments")) {
-		if (!contentLen) {
+	} else if (strcmp(page, "appointments") == 0) {
+		if (contentLen == 0) {
 			// Show Appointments HTML
 		} else {
 			// Handle appointments postData (add, edit, delete?, maybe add more "pages" for that)
@@ -126,10 +127,9 @@ int main(int argc, char** argv) {
 				// Failed, show error
 			}
 		}
-	}
-	else if (!strcmp(page, "menu")) {
+	} else if (strcmp(page, "menu") == 0) {
 		htmlTemplate = getTemplate("templates/menue.html");
-	} else if (!strcmp(page, "logout")) {
+	} else if (strcmp(page, "logout") == 0) {
 		setCookie("name", (char*)"");
 		htmlTemplate = getTemplate("templates/login.html");
 	} else {
@@ -153,6 +153,9 @@ int main(int argc, char** argv) {
 		free(postData);
 	}
 
+	if (htmlHead != NULL) {
+		free(htmlHead);
+	}	
 	if (htmlTemplate != NULL) {
 		free(htmlTemplate);
 	}
