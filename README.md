@@ -16,6 +16,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - Passwort ändern
 - input fehlerprüfung
 - HTML Terminanzeige sieht bisschen kaputt aus
+
   
 ## Aufgaben:
   
@@ -43,4 +44,5 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - ggf password hashen (benötigt openssl, wäre ok) ggf eigene verschlüsselung (klingt als wäre das bonus)
 - ~~Funktion Datei~~
 - ~~string parser~~
+-getdescription terminverwaltung
   
