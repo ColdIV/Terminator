@@ -90,7 +90,7 @@ void formFunctionsExample() {
 
 	// For parser
 	char str[] = "?vorname=hans&name1=test1&name2=test2&password=pass&name=test&name3=test3&name4=&xyz=abc&name5=";
-	char *tmpStr;
+	char tmpStr[100];
 	// Only for input, usually you can just set the string in here like: *find = "name1";
 	char *find = new char[100];
 
@@ -119,7 +119,7 @@ void formFunctionsExample() {
 				std::cout << "Find: ";
 				std::cin >> find;
 
-				tmpStr = getValueOfKey(str, find);
+				strcpy(tmpStr, getValueOfKey(str, find));
 
 				std::cout << "-------------------\n";
 

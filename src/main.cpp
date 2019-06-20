@@ -40,15 +40,21 @@ int main(int argc, char** argv) {
 	char *htmlTemplate = NULL;
 	
 	// Get page from getData
-	char *page = getValueOfKey(getData, (char*)"page");
+	char page[100];
+	strcpy(page, getValueOfKey(getData, (char*)"page"));
 
 	// Check if user logged in, if yes: create user, else: route to register
 	User user = { 0 };
-	if (page != "register" && page != "login" && strcmp(getValueOfKey(cookieData, (char*)"name", ';'), "") != 0) {
+	char cookieUsername[50];
+	strcpy(cookieUsername, getValueOfKey(cookieData, (char*)"name", ';'));
+
+	if (strcmp(page, "register") != 0 && (page, "login") != 0 && strcmp(cookieUsername, "") != 0) {
 		// Create user
 		// @TODO: Check if data is valid, maybe some security stuff. No clue, need sleep.
-		user.id = atoi(getValueOfKey(cookieData, (char*)"id", ';'));
-		strcpy(user.name, getValueOfKey(cookieData, (char*)"name", ';'));
+		char userID[50];
+		strcpy(userID, getValueOfKey(cookieData, (char*)"id", ';'));
+		user.id = atoi(userID);
+		strcpy(user.name, cookieUsername);
 		user.loggedIn = true;
 	} 
 	// else {
@@ -111,7 +117,7 @@ int main(int argc, char** argv) {
 	std::cout << "Content-type:text/html\r\n\r\n";
 	std::cout << htmlTemplate;
 	
-	// Free memory (should free automatically on program exit, but who knows)
+	// Wee Free Mem' (should free automatically on program exit, but who knows)
 	if (postData) free(postData);
 	if (htmlTemplate) free(htmlTemplate);
 

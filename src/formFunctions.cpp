@@ -23,7 +23,7 @@
 */
 char* getValueOfKey(const char *str, char *key, char separator) {
 	int end = 0;
-	char *tmpStr;
+	char tmpStr[100];
 	char *tmpKey = key;
 
 	if (*str == '?') str++;
@@ -44,7 +44,6 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 
 			for (end = 0; *(str + end) && *(str + end) != separator; end++);
 
-			tmpStr = new char[strlen(str)];
 			strcpy(tmpStr, str);
 			tmpStr[end] = '\0';
 

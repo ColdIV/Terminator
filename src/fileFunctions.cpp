@@ -29,7 +29,9 @@ void* readStructs(const char *fname, size_t *num, size_t element_size) {
 	fseek(f, 0, SEEK_SET);
 	data = malloc(element_size * (*num));
 	
-	if (!data) return NULL;
+	if (data == NULL) {
+		return NULL;
+	}
 
 	fread(data, element_size, (*num), f);
 	fclose(f);
@@ -51,12 +53,16 @@ void* readNthStruct(const char *fname, size_t n, size_t element_size) {
 	void *data;
 	FILE *f = fopen(fname, "rb");
 
-	if (f == NULL) return NULL;
+	if (f == NULL) {
+		return NULL;
+	}
 
 	fseek(f, (n - 1) * element_size, SEEK_SET);
 	data = malloc(element_size);
 
-	if (!data) return NULL;
+	if (data == NULL) {
+		return NULL;
+	}
 
 	fread(data, element_size, 1, f);
 	fclose(f);
@@ -74,7 +80,9 @@ void* readNthStruct(const char *fname, size_t n, size_t element_size) {
 void writeStructs(const char *fname, void *data, size_t num, size_t element_size) {
 	FILE *f = fopen(fname, "wb");
 
-	if (f == NULL) return;
+	if (f == NULL) {
+		return;
+	}
 
 	fwrite(data, element_size, num, f);
 	fclose(f);

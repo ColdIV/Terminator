@@ -19,16 +19,23 @@ int validateLogin(const char *fname, char *user, char *password) {
 		return 0;
 	}
 
+	int id = 0;
 	Account *accounts;
 	size_t size = 0;
 	accounts = (Account*)readStructs(fname, &size, sizeof(Account));
 
-	for (size_t i = 0; i < size; i++) {
-		if (!strcmp(accounts[i].name, user) && !strcmp(accounts[i].password, password)) {
-			return accounts[i].id + 1;
-		}
+	if (accounts == NULL) {
+		return 0;
 	}
 
+	for (size_t i = 0; i < size; i++) {
+		if (!strcmp(accounts[i].name, user) && !strcmp(accounts[i].password, password)) {
+			id = accounts[i].id + 1;
+			free(accounts);
+			return id;
+		}
+	}
+	free(accounts);
 	return 0;
 }
 
@@ -45,7 +52,9 @@ bool createAccount(const char *fname, char *user, char *password) {
 	size_t size = 0;
 	accounts = (Account*)readStructs(fname, &size, sizeof(Account));
 
-	if (!accounts) return false;
+	if (accounts == NULL) {
+		return false;
+	}
 
 	// Check if user already exists, if so: return false
 	for (size_t i = 0; i < size; i++) {
@@ -83,8 +92,10 @@ bool createAccount(const char *fname, char *user, char *password) {
 	returns					true on success, false on failure
 */
 bool login(const char *fname, char *data) {
-	char *user = getValueOfKey(data, (char*)"name");
-	char *password = getValueOfKey(data, (char*)"password");
+	char user[50];
+	char password[50];
+	strcpy(user, getValueOfKey(data, (char*)"name"));
+	strcpy(password, getValueOfKey(data, (char*)"password"));
 
 	int userID = validateLogin(fname, user, password);
 	char *id = NULL;
@@ -106,9 +117,12 @@ bool login(const char *fname, char *data) {
 	returns					true on success, false on failure
 */
 bool registerUser(const char *fname, char *data) {
-	char *user = getValueOfKey(data, (char*)"name");
-	char *password = getValueOfKey(data, (char*)"password");
-	char *repeatPassword = getValueOfKey(data, (char*)"repeatPassword");
+	char user[50];
+	char password[50];
+	char repeatPassword[50];
+	strcpy(user, getValueOfKey(data, (char*)"name"));
+	strcpy(password, getValueOfKey(data, (char*)"password"));
+	strcpy(repeatPassword, getValueOfKey(data, (char*)"repeatPassword"));
 
 	if (strcmp(password, repeatPassword) != 0) {
 		return false;
