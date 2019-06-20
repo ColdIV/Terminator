@@ -23,9 +23,14 @@ int main(int argc, char** argv) {
 
 	// Get GET and POST request data
 	char *getData = getenv("QUERY_STRING");
-	char *postData = new char[contentLen];
-	if (contentLen > 0) {
+	char *postData = (char*) malloc(contentLen * sizeof(char));
+	if (contentLen > 0 && postData) {
 		std::cin >> postData;
+	} else {
+		// Either no postData sent or
+		// failed to allocate memory, so act as if we had no input
+		// @TODO: Less lazy future me, make it prettier.
+		contentLen = 0;
 	}
 
 	// Get Cookie data
@@ -96,7 +101,7 @@ int main(int argc, char** argv) {
 	else if (!strcmp(page, "menu")) {
 		htmlTemplate = getTemplate("../htdocs/menue.html");
 	} else if (!strcmp(page, "logout")) {
-		setCookie((char*)"name", (char*)"");
+		setCookie("name", (char*)"");
 		htmlTemplate = getTemplate("../htdocs/login.html");
 	} else {
 		// Error 404 (Lazy, so just back to menu / login)
@@ -105,8 +110,10 @@ int main(int argc, char** argv) {
 	// Show HTML Template
 	std::cout << "Content-type:text/html\r\n\r\n";
 	std::cout << htmlTemplate;
-	// Free htmlTemplate (memory allocated with malloc)
-	free(htmlTemplate);
+	
+	// Free memory (should free automatically on program exit, but who knows)
+	if (postData) free(postData);
+	if (htmlTemplate) free(htmlTemplate);
 
 	return 0;
 }

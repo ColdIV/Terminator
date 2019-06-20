@@ -105,6 +105,6 @@ int compare(const void *p1, const void *p2) {
 	
 	ATTENTION: Cookies have to be set before any other output!
 */
-void setCookie(char *key, char *value) {
+void setCookie(const char *key, char *value) {
 	std::cout << "Set-Cookie:" << key << " = " << value << ";\r\n";
 }

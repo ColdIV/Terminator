@@ -82,8 +82,8 @@ bool login(const char *fname, char *data) {
 	
 	if (userID) {
 		sprintf(id, "%d", --userID);
-		setCookie((char*)"id", id);
-		setCookie((char*)"name", user);
+		setCookie("id", id);
+		setCookie("name", user);
 		return true;
 	}
 	

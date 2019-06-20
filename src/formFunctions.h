@@ -4,6 +4,6 @@
 char* getValueOfKey(const char *str, char *key, char separator = '&');
 time_t getTimestamp(char *date);
 int compare(const void *p1, const void *p2);
-void setCookie(char *key, char *value);
+void setCookie(const char *key, char *value);
 
 #endif
