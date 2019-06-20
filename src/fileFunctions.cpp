@@ -11,6 +11,7 @@
 	size_t element_size     takes the sizeof the struct
 
 	ATTENTION: This function returns void*, to get the struct you will have to convert the type
+			   Also: Make sure to free(data) when you are done using it!
 	Example:
 		TestStruct *test = 0;
 		size_t num = 0;
@@ -27,6 +28,9 @@ void* readStructs(const char *fname, size_t *num, size_t element_size) {
 	*num = ftell(f) / element_size;
 	fseek(f, 0, SEEK_SET);
 	data = malloc(element_size * (*num));
+	
+	if (!data) return NULL;
+
 	fread(data, element_size, (*num), f);
 	fclose(f);
 
@@ -77,8 +81,10 @@ void writeStructs(const char *fname, void *data, size_t num, size_t element_size
 	This function reads     the content of a file and returns it as a string (char*)
 	char *fname             takes a string
 	returns                 the content of a file as string or NULL
+
+	ATTENTION: Make sure to free(buffer) when you are done using it!
 */
-char* getTemplate(char *fname) {
+char* getTemplate(const char *fname) {
 	char *buffer;
 	long size;
 	FILE *f = fopen(fname, "rb");
@@ -86,7 +92,7 @@ char* getTemplate(char *fname) {
 		fseek(f, 0, SEEK_END);
 		size = ftell(f);
 		fseek(f, 0, SEEK_SET);
-		buffer = new char[size];
+		buffer = (char*) malloc(size * sizeof(char));
 
 		if (buffer != NULL) {
 			fread(buffer, size, 1, f);

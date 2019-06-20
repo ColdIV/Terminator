@@ -31,6 +31,8 @@ int main(int argc, char** argv) {
 	// Get Cookie data
 	char *cookieData = getenv("HTTP_COOKIE");
 	
+	// Template
+	char *htmlTemplate = NULL;
 	
 	// Get page from getData
 	char *page = getValueOfKey(getData, (char*)"page");
@@ -53,12 +55,12 @@ int main(int argc, char** argv) {
 	// Routing
 	if (!strcmp(page, "login") || (!user.loggedIn && strcmp(page, "register") != 0)) {
 		if (!contentLen) {
-			std::cout << getTemplate((char*)"../htdocs/login.html");
+			htmlTemplate = getTemplate("../htdocs/login.html");
 		} else {
 			// Handle Login (Login should set cookie)
 			if (login("accounts.bin", postData)) {
 				// Login successfull
-				std::cout << getTemplate((char*)"../htdocs/menue.html");
+				htmlTemplate = getTemplate("../htdocs/menue.html");
 			} else {
 				// Login failed, show error
 			}
@@ -72,7 +74,7 @@ int main(int argc, char** argv) {
 			if (registerUser("accounts.bin", postData)) {
 				// Register successfull
 				// Auto-Login user
-				std::cout << getTemplate((char*)"../htdocs/menue.html");
+				htmlTemplate = getTemplate("../htdocs/menue.html");
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
@@ -92,13 +94,19 @@ int main(int argc, char** argv) {
 		}
 	}
 	else if (!strcmp(page, "menu")) {
-		std::cout << getTemplate((char*)"../htdocs/menue.html");
+		htmlTemplate = getTemplate("../htdocs/menue.html");
 	} else if (!strcmp(page, "logout")) {
 		setCookie((char*)"name", (char*)"");
-		std::cout << getTemplate((char*)"../htdocs/login.html");
+		htmlTemplate = getTemplate("../htdocs/login.html");
 	} else {
 		// Error 404 (Lazy, so just back to menu / login)
 	}
+
+	// Show HTML Template
+	std::cout << "Content-type:text/html\r\n\r\n";
+	std::cout << htmlTemplate;
+	// Free htmlTemplate (memory allocated with malloc)
+	free(htmlTemplate);
 
 	return 0;
 }
