@@ -118,8 +118,8 @@ int main(int argc, char** argv) {
 	std::cout << htmlTemplate;
 	
 	// Wee Free Mem' (should free automatically on program exit, but who knows)
-	if (postData) free(postData);
-	if (htmlTemplate) free(htmlTemplate);
+	free(postData);
+	free(htmlTemplate);
 
 	return 0;
 }
