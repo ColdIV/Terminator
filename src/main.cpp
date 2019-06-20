@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 		} else {
 			// Handle appointments postData (add, edit, delete?, maybe add more "pages" for that)
 			// Add Appointment
-			if (handleAppointment) {
+			if (1/*handleAppointment*/) {
 				// Success, show appointments
 			} else {
 				// Failed, show error

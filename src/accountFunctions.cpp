@@ -78,7 +78,7 @@ bool login(const char *fname, char *data) {
 	char *password = getValueOfKey(data, (char*)"password");
 
 	int userID = validateLogin(fname, user, password);
-	char *id;
+	char *id = NULL;
 	
 	if (userID) {
 		sprintf(id, "%d", --userID);

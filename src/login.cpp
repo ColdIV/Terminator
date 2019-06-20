@@ -14,6 +14,20 @@ struct Account {
     int id;
 };
 
+bool validateLogin(char *user, char *password){
+	Account *accounts;
+	size_t size = 0;
+	accounts = (Account*) readStructs("accounts.bin", &size, sizeof(Account));
+
+	for (size_t i = 0; i < size; i++){
+		if (!strcmp(accounts[i].user, user) && !strcmp(accounts[i].password, password)){
+			return true;
+		}
+	}
+
+	return false;
+}
+
 int login(char* user, char* password) {
 	int i =0;
     Account account;
@@ -30,7 +44,7 @@ int login(char* user, char* password) {
 		std::cout << getTemplate((char*)"../htdocs/menue.html");
 	}
 	else if((char*)*reghtml == (char*)"../htdocs/reg.html"){
-		Account *accounts;
+		Account *accounts = NULL;
 		size_t size = 0;
 		writeStructs("accounts.bin", &data, size, sizeof(Account));
 
@@ -48,16 +62,3 @@ int login(char* user, char* password) {
     return 0;
 }
 
-bool validateLogin(char *user, char *password){
-	Account *accounts;
-	size_t size = 0;
-	accounts = (Account*) readStructs("accounts.bin", &size, sizeof(Account));
-
-	for (size_t i = 0; i < size; i++){
-		if (!strcmp(accounts[i].user, user) && !strcmp(accounts[i].password, password)){
-			return true;
-		}
-	}
-
-	return false;
-}
