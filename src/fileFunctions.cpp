@@ -103,7 +103,8 @@ char* getTemplate(const char *fname) {
 		fseek(f, 0, SEEK_END);
 		size = ftell(f);
 		fseek(f, 0, SEEK_SET);
-		buffer = (char*) malloc(size * sizeof(char));
+		// size + 1 for '\0', took some time to find this... Stupid me.
+		buffer = (char*) malloc((size + 1) * sizeof(char));
 
 		if (buffer != NULL) {
 			fread(buffer, size, 1, f);
