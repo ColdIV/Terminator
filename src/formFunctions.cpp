@@ -26,6 +26,10 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 	char tmpStr[100];
 	char *tmpKey = key;
 
+	if (str == NULL || key == NULL) {
+		return NULL;
+	}
+
 	if (*str == '?') str++;
 
 	if (*str && *str != *tmpKey) {
