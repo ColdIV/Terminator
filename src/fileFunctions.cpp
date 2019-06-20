@@ -55,6 +55,9 @@ void* readNthStruct(const char *fname, size_t n, size_t element_size) {
 
 	fseek(f, (n - 1) * element_size, SEEK_SET);
 	data = malloc(element_size);
+
+	if (!data) return NULL;
+
 	fread(data, element_size, 1, f);
 	fclose(f);
 

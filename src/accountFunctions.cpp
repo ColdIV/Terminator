@@ -41,8 +41,11 @@ int validateLogin(const char *fname, char *user, char *password) {
 */
 bool createAccount(const char *fname, char *user, char *password) {
 	Account *accounts;
+	Account *tmpAccounts;
 	size_t size = 0;
 	accounts = (Account*)readStructs(fname, &size, sizeof(Account));
+
+	if (!accounts) return false;
 
 	// Check if user already exists, if so: return false
 	for (size_t i = 0; i < size; i++) {
@@ -52,17 +55,23 @@ bool createAccount(const char *fname, char *user, char *password) {
 	}
 
 	// Create user
-	accounts = (Account*)realloc(accounts, sizeof(Account) * (size + 1));
-	if (accounts) {
-		accounts[size].id = accounts[size - 1].id + 1;
-		strcpy(accounts[size].name, user);
-		strcpy(accounts[size].password, password);
+	tmpAccounts = (Account*)realloc(accounts, sizeof(Account) * (size + 1));
 
-		writeStructs(fname, accounts, size, sizeof(Account));
-	} else {
-		// Error occurred whilst trying to allocate new memory for our array
+	if (tmpAccounts == NULL) {
+		// Failed to allocate new memory, free old memory and return false
+		free(accounts);
 		return false;
 	}
+
+	accounts = tmpAccounts;
+
+	accounts[size].id = accounts[size - 1].id + 1;
+	strcpy(accounts[size].name, user);
+	strcpy(accounts[size].password, password);
+
+	writeStructs(fname, accounts, size, sizeof(Account));
+
+	free(accounts);
 
 	return true;
 }
