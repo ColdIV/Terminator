@@ -2,8 +2,10 @@
 ## Ordnerstruktur
 ### cgi-bin/
 In diesen Ordner kommen die fertigen \*.exe Dateien, diese werden allerdings nicht hochgeladen und müssen Lokal selbst kompiliert werden.
-### htdocs/
+### cgi-bin/templates/
 Hier kommen die HTML Dateien rein
+### htdocs/
+Hier kommen die Bilder und CSS Dateien rein
 ### src/
 In diesen Ordner kommen die \*.cpp und \*.h Dateien
 
@@ -35,7 +37,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
  
 ### joshua:
 - sortieren (uhrzeit fehlt)
-- cpp zu schönen header dateien machen (login, )
+- ~~cpp zu schönen header dateien machen (login, )~~
 - ~~vergleichfunktions für sortierung (getTimestamp ist schon da, also kaum noch aufwand)~~
 - ~~cookies (https://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm)~~
 - ~~strukturen einzeln an datei anhängen / ändern (denke ist unnötig, evtl später)~~ ist egal!
@@ -44,5 +46,5 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - ggf password hashen (benötigt openssl, wäre ok) ggf eigene verschlüsselung (klingt als wäre das bonus)
 - ~~Funktion Datei~~
 - ~~string parser~~
--getdescription terminverwaltung
+- getdescription terminverwaltung
   
