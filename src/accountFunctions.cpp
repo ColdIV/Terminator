@@ -53,30 +53,40 @@ bool createAccount(const char *fname, char *user, char *password) {
 	accounts = (Account*)readStructs(fname, &size, sizeof(Account));
 
 	if (accounts == NULL) {
-		return false;
-	}
-
-	// Check if user already exists, if so: return false
-	for (size_t i = 0; i < size; i++) {
-		if (!strcmp(accounts[i].name, user)) {
+		// Create first Account
+		accounts = (Account*)malloc((size + 1) * sizeof(Account));
+		
+		if (accounts == NULL) {
 			return false;
 		}
+
+		accounts[size].id = 0;
+		strcpy(accounts[size].name, user);
+		strcpy(accounts[size].password, password);
+
+	} else {
+		// Check if user already exists, if so: return false
+		for (size_t i = 0; i < size; i++) {
+			if (!strcmp(accounts[i].name, user)) {
+				return false;
+			}
+		}
+
+		// Create user
+		tmpAccounts = (Account*)realloc(accounts, (size + 1) * sizeof(Account));
+
+		if (tmpAccounts == NULL) {
+			// Failed to allocate new memory, free old memory and return false
+			free(accounts);
+			return false;
+		}
+
+		accounts = tmpAccounts;
+
+		accounts[size].id = accounts[size - 1].id + 1;
+		strcpy(accounts[size].name, user);
+		strcpy(accounts[size].password, password);
 	}
-
-	// Create user
-	tmpAccounts = (Account*)realloc(accounts, sizeof(Account) * (size + 1));
-
-	if (tmpAccounts == NULL) {
-		// Failed to allocate new memory, free old memory and return false
-		free(accounts);
-		return false;
-	}
-
-	accounts = tmpAccounts;
-
-	accounts[size].id = accounts[size - 1].id + 1;
-	strcpy(accounts[size].name, user);
-	strcpy(accounts[size].password, password);
 
 	writeStructs(fname, accounts, size, sizeof(Account));
 
@@ -118,11 +128,27 @@ bool login(const char *fname, char *data) {
 */
 bool registerUser(const char *fname, char *data) {
 	char user[50];
+	char *tmpUser;
 	char password[50];
+	char *tmpPassword;
 	char repeatPassword[50];
-	strcpy(user, getValueOfKey(data, (char*)"username"));
-	strcpy(password, getValueOfKey(data, (char*)"password"));
-	strcpy(repeatPassword, getValueOfKey(data, (char*)"repeatPassword"));
+	char *tmpRepeatPassword;
+
+	tmpUser = getValueOfKey(data, (char*)"username");
+	tmpPassword = getValueOfKey(data, (char*)"password");
+	tmpRepeatPassword = getValueOfKey(data, (char*)"repeatPassword");
+
+	if (tmpUser == NULL || tmpPassword == NULL || tmpRepeatPassword == NULL) {
+		return false;
+	}
+
+	strcpy(user, tmpUser);
+	strcpy(password, tmpPassword);
+	strcpy(repeatPassword, tmpRepeatPassword);
+
+	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1) {
+		return false;
+	}
 
 	if (strcmp(password, repeatPassword) != 0) {
 		return false;
