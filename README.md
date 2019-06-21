@@ -34,6 +34,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - wir könnten evtl die templates nochmal grafik mäßig überarbeiten, wenn wir das "Terminator" logo nutzen wollen xD Muss aber nicht, finds auch cool so wies ist
 - bei den formularen muss jetzt überall **method="post"** ergänzt werden und bei action muss jetzt z.b. wenn login aufgerufen wird **action="?page=login** stehen, die links werde ich wahrscheinlich aber selber anpassen bei action
 - glaub das war alles, ansonsten ergänz ichs xD
+- fehlermeldung login
  
 ### joshua:
 - sortieren (uhrzeit fehlt)
