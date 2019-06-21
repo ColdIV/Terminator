@@ -13,6 +13,7 @@ struct Appointment {
 	char *time[100];
 	char *description;
 	int id;
+	int userid;
 };// feste größe in formFunction.h hab da die strukts abgelegt lol
 
 void appointmentHTML(){
