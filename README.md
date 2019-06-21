@@ -13,7 +13,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 ## Todo
 - ~~Login mit sessions~~
 - nach Datum sortieren (uhrzeit fehlt)
-- Termine anlegen, löschen, suchen, ausgeben, ändern
+- Termine anlegen, löschen, ausgeben, ändern, html body tag userid
 - Registrierung
 - Passwort ändern
 - input fehlerprüfung
