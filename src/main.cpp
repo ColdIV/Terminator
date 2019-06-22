@@ -47,7 +47,8 @@ int main(int argc, char** argv) {
 	}
 	
 	// Template
-	char *htmlTemplate = NULL;
+	char *htmlTemplatePart1 = NULL;
+	char *htmlTemplatePart2 = NULL;
 
 	// Get page from getData
 	// @TODO: Why exactly doesn't tmpPage show the correct value? (std::cout << tmpPage; shows rubbish, page works.)
@@ -89,12 +90,12 @@ int main(int argc, char** argv) {
 	// Routing
 	if (strcmp(page, "login") == 0 || (!user.loggedIn && strcmp(page, "register") != 0)) {
 		if (contentLen == 0) {
-			htmlTemplate = getTemplate("templates/login.html");
+			htmlTemplatePart1 = getTemplate("templates/login.html");
 		} else {
 			// Handle Login (Login should set cookie)
 			if (login("accounts.bin", postData)) {
 				// Login successfull
-				htmlTemplate = getTemplate("templates/menue.html");
+				htmlTemplatePart1 = getTemplate("templates/menue.html");
 			} else {
 				// Login failed, show error
 			}
@@ -102,14 +103,14 @@ int main(int argc, char** argv) {
 	} else if (strcmp(page, "register") == 0) {
 		if (contentLen == 0) {
 			// Show Register HTML
-			htmlTemplate = getTemplate("templates/register.html");
+			htmlTemplatePart1 = getTemplate("templates/register.html");
 		}
 		else {
 			// Handle Register
 			if (registerUser("accounts.bin", postData)) {
 				// Register successfull
 				// Auto-Login user
-				htmlTemplate = getTemplate("templates/menue.html");
+				htmlTemplatePart1 = getTemplate("templates/menue.html");
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
@@ -128,24 +129,34 @@ int main(int argc, char** argv) {
 			}
 		}
 	} else if (strcmp(page, "menu") == 0) {
-		htmlTemplate = getTemplate("templates/menue.html");
+		htmlTemplatePart1 = getTemplate("templates/menue.html");
 	} else if (strcmp(page, "logout") == 0) {
 		setCookie("name", (char*)"");
-		htmlTemplate = getTemplate("templates/login.html");
+		htmlTemplatePart1 = getTemplate("templates/login.html");
 	} else {
 		// Error 404 (Lazy, so just back to login)
-		htmlTemplate = getTemplate("templates/login.html");
+		htmlTemplatePart1 = getTemplate("templates/login.html");
 	}
 
 	// Show HTML Template
 	std::cout << "Content-type:text/html\r\n\r\n";
 	char *htmlHead = getTemplate("templates/head.html");
 
-	if (htmlHead == NULL || htmlTemplate == NULL) {
+	if (htmlHead == NULL || htmlTemplatePart1 == NULL) {
 		std::cout << "Error! Could not find template files." << std::endl;
 	} else {
 		std::cout << htmlHead << std::endl;
-		std::cout << htmlTemplate;
+		std::cout << htmlTemplatePart1 << std::endl;
+	}
+
+	if (strcmp(page, "appointment") == 0) {
+		// Show appointments
+	} /* else {
+	  // Same for other pages
+	} */
+
+	if (htmlTemplatePart2 != NULL) {
+		std::cout << htmlTemplatePart2 << std::endl;
 	}
 	
 	// Wee Free Mem' (should free automatically on program exit, but who knows)
@@ -155,9 +166,14 @@ int main(int argc, char** argv) {
 
 	if (htmlHead != NULL) {
 		free(htmlHead);
-	}	
-	if (htmlTemplate != NULL) {
-		free(htmlTemplate);
+	}
+
+	if (htmlTemplatePart1 != NULL) {
+		free(htmlTemplatePart1);
+	}
+
+	if (htmlTemplatePart2 != NULL) {
+		free(htmlTemplatePart2);
 	}
 
 	return 0;
