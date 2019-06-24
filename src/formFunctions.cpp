@@ -11,6 +11,8 @@
 	char separator      takes a char or nothing (default is '&')
 	returns             a string or NULL if key could not be found
 
+	ATTENTION: Make sure to free(value) when you are done using it!
+
 	Example:
 	getValueOfKey("?name=Admin&password=abc123", "name")
 	// -> returns "Admin"
@@ -23,7 +25,7 @@
 */
 char* getValueOfKey(const char *str, char *key, char separator) {
 	int end = 0;
-	char tmpStr[100];
+	char *tmpStr;
 	char *tmpKey = key;
 
 	if (str == NULL || key == NULL) {
@@ -48,6 +50,12 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 			str++;
 
 			for (end = 0; *(str + end) && *(str + end) != separator; end++);
+
+			tmpStr = (char*)malloc(end * sizeof(char*));
+
+			if (tmpStr == NULL) {
+				return NULL;
+			}
 
 			strcpy(tmpStr, str);
 			tmpStr[end] = '\0';
