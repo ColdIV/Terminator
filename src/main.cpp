@@ -51,44 +51,43 @@ int main(int argc, char** argv) {
 	char *htmlTemplatePart2 = NULL;
 
 	// Get page from getData
-	// @TODO: Why exactly doesn't tmpPage show the correct value? (std::cout << tmpPage; shows rubbish, page works.)
-	char page[100];
-	char *tmpPage = NULL;
-	tmpPage = getValueOfKey(getData, (char*)"page");
-	if (tmpPage == NULL) {
-		strcpy(page, "login");
-	} else {
-		strcpy(page, tmpPage);
+	char *page = NULL;
+	page = getValueOfKey(getData, (char*)"page");
+	
+	if (page == NULL) {
+		page = (char*) malloc(8 * sizeof(char));
+		strcpy(page, "default");
 	}
 
 	// Check if user logged in, if yes: create user, else: route to register
 	User user = { 0 };
-	char cookieUsername[50];
-	char *tmpCookieUsername = NULL;
-	tmpCookieUsername = getValueOfKey(cookieData, (char*)"name", ';');
-	if (tmpCookieUsername == NULL) {
-		strcpy(cookieUsername, "");
-	} else {
-		strcpy(cookieUsername, tmpCookieUsername);
+	char *cookieUsername = NULL;
+	cookieUsername = getValueOfKey(cookieData, (char*)"name", ';');
+	
+	if (cookieUsername == NULL) {
+		cookieUsername = (char*)"";
 	}
 
-	if (strcmp(page, "register") != 0 && (page, "login") != 0 && strcmp(cookieUsername, "") != 0) {
+	if (strcmp(page, "default") != 0 && strcmp(page, "register") != 0 && (page, "login") != 0 && strcmp(cookieUsername, "") != 0) {
 		// Create user
 		// @TODO: Check if data is valid, maybe some security stuff. No clue, need sleep.
-		char userID[50];
-		strcpy(userID, getValueOfKey(cookieData, (char*)"id", ';'));
-		user.id = atoi(userID);
-		strcpy(user.name, cookieUsername);
-		user.loggedIn = true;
+		char *userID;
+		userID = getValueOfKey(cookieData, (char*)"id", ';');
+
+		if (userID == NULL) {
+			user.loggedIn = false;
+		} else {
+			user.id = atoi(userID);
+			free(userID);
+			strcpy(user.name, cookieUsername);
+			user.loggedIn = true;
+		}
+
 	} 
-	// else {
-		// @TODO: Delete this comment.
-		// route to "register" or "login", will happen below
-	// }
 
 
 	// Routing
-	if (strcmp(page, "login") == 0 || (!user.loggedIn && strcmp(page, "register") != 0)) {
+	if (strcmp(page, "default") == 0 || strcmp(page, "login") == 0 || (!user.loggedIn && strcmp(page, "register") != 0)) {
 		if (contentLen == 0) {
 			htmlTemplatePart1 = getTemplate("templates/login.html");
 		} else {
@@ -162,6 +161,14 @@ int main(int argc, char** argv) {
 	// Wee Free Mem' (should free automatically on program exit, but who knows)
 	if (postData != NULL) {
 		free(postData);
+	}
+
+	if (page != NULL) {
+		free(page);
+	}
+
+	if (cookieUsername != NULL && strcmp(cookieUsername, "") != 0) {
+		free(cookieUsername);
 	}
 
 	if (htmlHead != NULL) {
