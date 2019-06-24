@@ -103,19 +103,19 @@ bool createAccount(const char *fname, char *user, char *password) {
 	returns					true on success, false on failure
 */
 bool login(const char *fname, char *data) {
-	char user[50];
-	char *tmpUser;
-	char password[50];
-	char *tmpPassword;
-	tmpUser = getValueOfKey(data, (char*)"username");
-	tmpPassword = getValueOfKey(data, (char*)"password");
-
-	if (tmpUser == NULL || tmpPassword == NULL) {
+	char *user = NULL;
+	char *password = NULL;
+	
+	user = getValueOfKey(data, (char*)"username");
+	if (user == NULL) {
 		return false;
 	}
 
-	strcpy(user, tmpUser);
-	strcpy(password, tmpPassword);
+	password = getValueOfKey(data, (char*)"password");
+	if (password == NULL) {
+		free(user);
+		return false;
+	}
 
 	int userID = validateLogin(fname, user, password);
 	char id[100];
@@ -126,8 +126,14 @@ bool login(const char *fname, char *data) {
 		_itoa(userID, id, 10);
 		setCookie("id", id);
 		setCookie("name", user);
+
+		free(user);
+		free(password);
 		return true;
 	}
+
+	free(user);
+	free(password);
 	return false;
 }
 
@@ -138,39 +144,47 @@ bool login(const char *fname, char *data) {
 	returns					true on success, false on failure
 */
 bool registerUser(const char *fname, char *data) {
-	char user[50];
-	char *tmpUser;
-	char password[50];
-	char *tmpPassword;
-	char repeatPassword[50];
-	char *tmpRepeatPassword;
+	char *user = NULL;
+	char *password = NULL;
+	char *repeatPassword = NULL;
 
-	tmpUser = getValueOfKey(data, (char*)"username");
-	tmpPassword = getValueOfKey(data, (char*)"password");
-	tmpRepeatPassword = getValueOfKey(data, (char*)"repeatPassword");
+	bool valuesValid = true;
 
-	if (tmpUser == NULL || tmpPassword == NULL || tmpRepeatPassword == NULL) {
+	user = getValueOfKey(data, (char*)"username");
+	if (user == NULL) {
+		return false;
+	}
+	
+	password = getValueOfKey(data, (char*)"password");
+	if (password == NULL) {
+		free(user);
 		return false;
 	}
 
-	strcpy(user, tmpUser);
-	strcpy(password, tmpPassword);
-	strcpy(repeatPassword, tmpRepeatPassword);
-
-
-
-	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1) {
+	repeatPassword = getValueOfKey(data, (char*)"repeatPassword");
+	if (repeatPassword == NULL) {
+		free(user);
+		free(password);
 		return false;
+	}
+
+
+	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1){
+		valuesValid = false;
 	}
 
 	if (strcmp(password, repeatPassword) != 0) {
-		return false;
+		valuesValid = false;
 	}
 
-	if (createAccount(fname, user, password)) {
+
+	if (valuesValid && createAccount(fname, user, password)) {
 		login(fname, data);
 		return true;
 	}
 
+	free(user);
+	free(password);
+	free(repeatPassword);
 	return false;
 }
