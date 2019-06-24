@@ -37,6 +37,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 - fehlermeldung login und reg
  
 ### joshua:
+- \_CRT_SECURE_NO_WARNINGS entfernen und fehler beheben
 - sortieren (uhrzeit fehlt)
 - ~~cpp zu schönen header dateien machen (login, )~~
 - ~~vergleichfunktions für sortierung (getTimestamp ist schon da, also kaum noch aufwand)~~
