@@ -195,7 +195,7 @@ int mainEXAMPLE(int argc, char** argv) {
 	//std::cout << res[1].name << std::endl;
 	//system("pause");
 
-	// TEST MEN�
+	// TEST MENÜ
 	while (cho == 0) {
 		std::cout << "Examples\n"
 			<< "-------------------\n"
@@ -214,3 +214,38 @@ int mainEXAMPLE(int argc, char** argv) {
 
 	return 0;
 }
+/*
+// main.cpp
+appointmentsAnzeigen(userID);
+
+// appointments.cpp
+Struct appointments {
+    Int appointmentID;
+    Int userID;
+    Char description[200];
+};
+
+appointments* appointmentsAnzeigen() {
+Appointments = readstructs();
+If (appointments) return NULL;
+Return appointments;
+}
+
+
+Void appointmentLöschen(int appointmentID, int userID) {
+    Appointments = readstruct();
+    Appointment newAppointment;
+
+    For (...) {
+        If (appointments[i].userID == userID && appointments[i].appointmentID == appointmentID) {
+
+// Mach nichts
+}
+Else {
+    newAppointment[i] == appointments[i];
+}
+}
+free(appointments);
+}
+
+*/
