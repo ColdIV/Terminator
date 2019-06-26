@@ -4,6 +4,8 @@
 #include "formFunctions.h"
 #include "accountFunctions.h"
 #include <string.h>
+#include <stdlib.h>
+#include <string.h>
 
 struct User {
 	int id;
