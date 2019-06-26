@@ -1,12 +1,14 @@
+/*OLD*/
 /*body{
 background-color: #fff; 
 background-image:
 linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
 linear-gradient(#eee .1em, transparent .1em);
 background-size: 100% 1.2em;
- https://leaverou.github.io/css3patterns/# 
 }*/
-body{
+
+/* NEW DESIGNE*/
+/*body{
 background:
 radial-gradient(black 15%, transparent 16%) 0 0,
 radial-gradient(black 15%, transparent 16%) 8px 8px,
@@ -14,7 +16,18 @@ radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
 radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
 background-color:#282828;
 background-size:16px 16px;
+}*/
+
+/*OLD IN DARK*/
+body{
+background-color: #fff;
+background-image:
+linear-gradient(90deg, transparent 79px, #abced4 79px, red 81px, transparent 81px),
+linear-gradient(#333538.1em, black .1em);
+background-size: 100% 1.2em;
 }
+ /*https://leaverou.github.io/css3patterns/# */
+
 div.row{
   width:100%;
 }
