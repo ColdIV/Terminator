@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -62,8 +61,8 @@ bool createAccount(const char *fname, char *user, char *password) {
 		}
 
 		accounts[size].id = 0;
-		strcpy(accounts[size].name, user);
-		strcpy(accounts[size].password, password);
+		strcpy_s(accounts[size].name, user);
+		strcpy_s(accounts[size].password, password);
 
 	} else {
 		// Check if user already exists, if so: return false
@@ -85,8 +84,8 @@ bool createAccount(const char *fname, char *user, char *password) {
 		accounts = tmpAccounts;
 
 		accounts[size].id = accounts[size - 1].id + 1;
-		strcpy(accounts[size].name, user);
-		strcpy(accounts[size].password, password);
+		strcpy_s(accounts[size].name, user);
+		strcpy_s(accounts[size].password, password);
 	}
 
 	writeStructs(fname, accounts, size + 1, sizeof(Account));
@@ -123,7 +122,7 @@ bool login(const char *fname, char *data) {
 	if (userID) {
 		userID--;
 		//sprintf(id, "%d", userID);
-		_itoa(userID, id, 10);
+		_itoa_s(userID, id, 10);
 		setCookie("id", id);
 		setCookie("name", user);
 

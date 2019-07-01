@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+#pragma warning( disable : 4996)
 #include <iostream>
 #include "fileFunctions.h"
 #include "formFunctions.h"
