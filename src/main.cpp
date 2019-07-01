@@ -19,6 +19,13 @@ int main(int argc, char** argv) {
 		GET data will be used for routing (it will tell us which template to send and which functions to call)
 	*/
 
+	// Filenames
+	const char *fileAccounts = "accounts.bin";
+	const char *fileTplLogin = "templates/login.html";
+	const char *fileTplRegister = "templates/register.html";
+	const char *fileTplMenue = "templates/menue.html";
+	const char *fileTplHead = "templates/head.html";
+
 	// Get length of POST data
 	char *tmpContentLen = getenv("CONTENT_LENGTH");
 	int contentLen;
@@ -91,12 +98,12 @@ int main(int argc, char** argv) {
 	// Routing
 	if (strcmp(page, "default") == 0 || strcmp(page, "login") == 0 || (!user.loggedIn && strcmp(page, "register") != 0)) {
 		if (contentLen == 0) {
-			htmlTemplatePart1 = getTemplate("templates/login.html");
+			htmlTemplatePart1 = getTemplate(fileTplLogin);
 		} else {
 			// Handle Login (Login should set cookie)
-			if (login("accounts.bin", postData)) {
+			if (login(fileAccounts, postData)) {
 				// Login successfull
-				htmlTemplatePart1 = getTemplate("templates/menue.html");
+				htmlTemplatePart1 = getTemplate(fileTplMenue);
 			} else {
 				// Login failed, show error
 			}
@@ -104,14 +111,14 @@ int main(int argc, char** argv) {
 	} else if (strcmp(page, "register") == 0) {
 		if (contentLen == 0) {
 			// Show Register HTML
-			htmlTemplatePart1 = getTemplate("templates/register.html");
+			htmlTemplatePart1 = getTemplate(fileTplRegister);
 		}
 		else {
 			// Handle Register
-			if (registerUser("accounts.bin", postData)) {
+			if (registerUser(fileAccounts, postData)) {
 				// Register successfull
 				// Auto-Login user
-				htmlTemplatePart1 = getTemplate("templates/menue.html");
+				htmlTemplatePart1 = getTemplate(fileTplMenue);
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
@@ -130,18 +137,18 @@ int main(int argc, char** argv) {
 			}
 		}
 	} else if (strcmp(page, "menu") == 0) {
-		htmlTemplatePart1 = getTemplate("templates/menue.html");
+		htmlTemplatePart1 = getTemplate(fileTplMenue);
 	} else if (strcmp(page, "logout") == 0) {
 		setCookie("name", (char*)"");
-		htmlTemplatePart1 = getTemplate("templates/login.html");
+		htmlTemplatePart1 = getTemplate(fileTplLogin);
 	} else {
 		// Error 404 (Lazy, so just back to login)
-		htmlTemplatePart1 = getTemplate("templates/login.html");
+		htmlTemplatePart1 = getTemplate(fileTplLogin);
 	}
 
 	// Show HTML Template
 	std::cout << "Content-type:text/html\r\n\r\n";
-	char *htmlHead = getTemplate("templates/head.html");
+	char *htmlHead = getTemplate(fileTplHead);
 
 	if (htmlHead == NULL || htmlTemplatePart1 == NULL) {
 		std::cout << "Error! Could not find template files." << std::endl;
