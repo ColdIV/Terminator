@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include "fileFunctions.h"
 
 /*
 	Changes:
@@ -8,26 +9,84 @@
 		program will have alphabet and key and username
 */
 
+
 struct Session {
 	int id;
 	char value[62];
 };
 
 int main() {
-	Session test = { 0 };
-	int KEY = 13;
-
-	test.id = 1;
-	char *username = "testname";
+	// Alphabet for 'encrypting'
+	const char *alphabet = "pekRrNfwYTOZsXLbmu0t6l18gIoJqcCB9y2KQixGv57aDhASzn3VFjMWPUEdH4";
 
 
-	int tmpVal = test.id + KEY;
+	// Check if a cookie is set, if so:
+	// Read structs
+	size_t amount = 0;
+	Session *tests = (Session*)readStructs("sessions.bin", &amount, sizeof(Session));
+
+	// Fake User ID and Username (Should be read from Cookie)
+	int userID = 0;
+	const char *username = "testname";
+
+	// # of our Session
+	int sessionPos = -1;
+
+	// Find struct with matching ID
+	for (int i = 0; i < amount; i++) {
+		if (tests[i].id == userID) {
+			sessionPos = i;
+		}
+	}
+
+	if (sessionPos == -1) {
+		// Whoops, not in file I guess...
+		// Throw some kind of error
+		return 0;
+	}
+
+	// If we reach this, we may continue
+	// We now got our struct:
+	// tests[sessionPos]
+	// And we can verify the cookie with reversing the shitty encrypting:
+	int tmpVal = userID;
 
 	for (int i = 0; i < strlen(username); i++) {
 		tmpVal += username[i];
 	}
 
-	char *alphabet = "pekRrNfwYTOZsXLbmu0t6l18gIoJqcCB9y2KQixGv57aDhASzn3VFjMWPUEdH4";
+	for (int i = 0; i < strlen(alphabet); i++) {
+		// make this better, but should be clear how it works
+		if ((char)(tests[sessionPos].value[i] ^ tmpVal) != alphabet[i]) return false;
+	}
+
+	// If we reach this, yay! They match, I guess.
+
+	// Now if no Cookie was set, we will have to create the shitty session
+	// we also might have to expand an array
+	// check if the file is empty
+	// write to file etc, but I don't want to do that right now.
+
+
+
+
+
+	// Shitty old stuff, don't bother scrolling.
+	
+	
+	/*Session test = { 0 };
+
+
+	test.id = 1;
+	const char *username = "testname";
+
+
+	int tmpVal = test.id;
+
+	for (int i = 0; i < strlen(username); i++) {
+		tmpVal += username[i];
+	}
+
 
 	char res[62];
 
@@ -51,7 +110,7 @@ int main() {
 		std::cout << (char)(res[i] ^ tmpVal);
 	}
 
-	strcpy_s(test.value, res);
+	strcpy_s(test.value, res);*/
 
 	system("pause");
 
