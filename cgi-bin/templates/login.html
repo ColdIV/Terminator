@@ -8,10 +8,10 @@
                         <p>Um die Terminverwaltung nutzen zu dürfen, müssen Sie sich anmelden!</p>
                         <form action="?page=login" method="post" autocomplete="off">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Benutzername" name="username">
+                                <input type="text" class="form-control" placeholder="Benutzername" name="username" maxlength="50">
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Passwort" name="password">
+                                <input type="password" class="form-control" placeholder="Passwort" name="password" maxlength="25">
                                  <a href="?page=register">Sie haben noch kein Account? Hier registrieren!</a> 
                             </div>
                             <button type="submit" id="sendlogin" class="btn btn-primary float-right">Login</button>
