@@ -51,17 +51,27 @@ bool appointmentAdd(const char fname,char *des, char appointmentId, char *user){
 	addAp = (Appointment*)readStructs(&fname, &nr, sizeof(Appointment));
 	
 	if(appointmentId == appointmentId){
-		return false; }
-	if(appointmentId != appointmentId || appointmentId == NULL){
-		addAp = (Appointment*)malloc((num+1)* sizeof(Appointment));
-		//PRÜFUNG muss noch rein	
-		addAp[num].appointmentId = 0;
-		strcpy_s(addAp[num].description, des);//char,const char 
+		return false;
 	}
-	writeStructs(&fname, addAp, num + 1, sizeof(Appointment));
+	else if(appointmentId != appointmentId || appointmentId == NULL){
+		addAp = (Appointment*)malloc((nr+1)* sizeof(Appointment));
+		//PRÜFUNG muss noch rein	
+		addAp[num].appointmentId = addAp[num].userId + nr+1;
+		strcpy_s(addAp[num].appointmentId, AappointmentId);
+		strcpy_s(addAp[num].userId, Auser);
+		strcpy_s(addAp[num].date, Adate);
+		strcpy_s(addAp[num].time, Atime);
+		strcpy_s(addAp[num].description, Ades);
+	}
+	writeStructs(&fname, addAp, nr + 1, sizeof(Appointment));
  
 	return 1;
 }
+	char *date[100];
+	char *time[100];
+	char *description[200];
+	char userId;
+	char appointmentId;
  
 //void writeStructs(const char *fname, void *data, size_t num, size_t element_size);
  
