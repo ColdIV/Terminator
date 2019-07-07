@@ -1,40 +1,36 @@
-#include <iostream>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "fileFunctions.h"
 #include "formFunctions.h"
-#include "appointmentFunctions.h"
-#include "fileFunctions.h"
-#include "formFunctions.h"
 #include "accountFunctions.h"
+#include <iostream>
+#include "appointmentFunctions.h"
 
 const char* fileTplError = "templates/error.html";
-//@TODO: Error Tenplate erstellen
+const char* fileTplDeleted = "templates/deleted.html";
+char *htmlTemplatePart = NULL;
+char *htmlTemplatePart3 = NULL;
 
-bool appointmentHTMLausgabe(const char fname, char* user) {
-	Appointment *test1 = 0;
+bool appointmentHTMLoutput(const char fname, char* user) {
+	Appointment *outputHTML = NULL;
 	size_t size = 0;
-	test1 = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
-
-	int givenUserId = 13;
-	/* givenuserID = getValueOfKey(cookieData, (char*)"id", ';'); */
+	outputHTML = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
 
 	for (size_t i = 0; i < size; i++) {
-		if (strcmp((char*)test1[i].userId,(char*) givenUserId)){
-			//@TODO: Error Tenplate erstellen
-			//Der User hat eine falschee Id
+		if (strcmp((char*)outputHTML[i].userId,user)){
+			htmlTemplatePart = getTemplate(fileTplError);
 			return false;
 		}
-		else(!strcmp((char*)test1[i].userId, (char*)givenUserId)){
-			for(size_t i = 0; i <= size; i++) {
-				while (!strcmp((char*)test1[i].userId, (char*)givenUserId)) {
+		if(!strcmp((char*)outputHTML[i].userId,user)){
+			for(int i = 0; i <= size; i++) {
+				while (!strcmp((char*)outputHTML[i].userId, user)); {
 					std::cout << "Content-type:text/html\r\n\r\n";
 					std::cout << "<tr>";
-					std::cout << "<td>" << test1[size].appointmentId << "< / td>";
-					std::cout << "<td>" << test1[size].date << "< / td>";
-					std::cout << "<td>" << test1[size].time << "< / td>";
-					std::cout << "<td>" << test1[size].description << ";< / td>";
+					std::cout << "<td>" << outputHTML[size].appointmentId << "< / td>";
+					std::cout << "<td>" << outputHTML[size].date << "< / td>";
+					std::cout << "<td>" << outputHTML[size].time << "< / td>";
+					std::cout << "<td>" << outputHTML[size].description << ";< / td>";
 					std::cout << "<td><button><i class = 'fa fa - pencil'>ändern< / i>< / button><button><i class = 'fa fa - trash'>löschen< / i>< / button>< / td>";
 					std::cout << "< / tr>";
 				}
@@ -64,7 +60,7 @@ bool makeAppointmentID(const char fname){
 			return true;
 		}
 		else {
-			//@TODO: Fehlermeldung mit getTemplate
+			htmlTemplatePart = getTemplate(fileTplError);
 			return false;
 		}
 	}
@@ -74,7 +70,9 @@ bool getDataApp(char* data) {
 	char* stime = NULL;
 	char* sdescription = NULL;
 	char* sappointmentId = NULL;
+	char* user = NULL;
 
+	user = getValueOfKey(data, (char*)"username");
 	sdate = getValueOfKey(data, (char*)"date");
 	stime = getValueOfKey(data, (char*)"time");
 	sdescription = getValueOfKey(data, (char*)"description");
@@ -89,8 +87,6 @@ bool appointmentAdd(const char fname, char* sdate, char* stime, char* sdescripti
 
 	// prüfen ob der cookie noch stimmt
 
-	//die neuen daten in struct als tmp reinschreiben
-	//makeApp ausführen
 	addAp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
 
 	if (addAp == NULL) {
@@ -98,9 +94,9 @@ bool appointmentAdd(const char fname, char* sdate, char* stime, char* sdescripti
 		addAp = (Appointment*)malloc((size + 1) * sizeof(Appointment));
 		//addAp[nr].appointmentId = 0;extra leer gelassen wg makeAppointmentID
 		
-		strcpy_s(addAp[size].date, sdate);
-		strcpy_s(addAp[size].time, stime);
-		strcpy_s(addAp[size].description, sdescription);
+		strcpy_s((char*)addAp[size].date,100, sdate);
+		strcpy_s((char*)addAp[size].time,100, stime);
+		strcpy_s((char*)addAp[size].description,200, sdescription);
 
 		makeAppointmentID(fname);
 		if (addAp == NULL) {
@@ -117,9 +113,9 @@ bool appointmentAdd(const char fname, char* sdate, char* stime, char* sdescripti
 			return false;
 		}
 
-		strcpy_s(addAp[size].date, sdate);
-		strcpy_s(addAp[size].time, stime);
-		strcpy_s(addAp[size].description, sdescription);
+		strcpy_s((char*)addAp[size].date,100, sdate);
+		strcpy_s((char*)addAp[size].time,100, stime);
+		strcpy_s((char*)addAp[size].description,200, sdescription);
 		makeAppointmentID(fname);
 
 	}
@@ -138,7 +134,7 @@ bool appointmentChange(const char fname, char* sdate, char* stime, char* sdescri
 	apChange = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
 
 	if (apChange == NULL) {
-		//@TODO: Template error
+		htmlTemplatePart = getTemplate(fileTplError);
 		return false;
 	}
 	for (size_t i = 0; i < size; i++) {
@@ -147,9 +143,9 @@ bool appointmentChange(const char fname, char* sdate, char* stime, char* sdescri
 		}
 		else if (!strcmp((char*)apChange[size].appointmentId, (char*)givenAppID)) {
 			
-			strcpy_s(apChange[size].date, sdate);
-			strcpy_s(apChange[size].time, stime);
-			strcpy_s(apChange[size].description, sdescription);
+			strcpy_s((char*)apChange[size].date,100, sdate);
+			strcpy_s((char*)apChange[size].time,100, stime);
+			strcpy_s((char*)apChange[size].description,200, sdescription);
 		}
 	}
 
@@ -180,7 +176,7 @@ bool deleteAppoi(const char fname, char* sappointmentId) {
 			m[n-1] = tmp[2];
 			*/
 			if (size == sizeof(Appointment)) {
-				//@TODO: Template gelöscht
+				htmlTemplatePart3 = getTemplate(fileTplDeleted);
 				return true;
 			}
 			else if(size < sizeof(Appointment)) {
@@ -190,10 +186,10 @@ bool deleteAppoi(const char fname, char* sappointmentId) {
 					//tmpdeleteApp[i].appointmentId = tmpdeleteApp2[i].appointmentId; 
 					tmpdeleteApp[i -1].appointmentId = tmpdeleteApp2[i].appointmentId;
 				}
-				//@TODO: Template gelöscht
+				htmlTemplatePart3 = getTemplate(fileTplDeleted);
 			}
 		else {
-			//@TODO: Tempalte error
+				htmlTemplatePart = getTemplate(fileTplError);
 			return false;
 		}
 
@@ -202,6 +198,5 @@ bool deleteAppoi(const char fname, char* sappointmentId) {
 		writeStructs(&fname, deleteApp, size, sizeof(Appointment));
 		}
 	}
-	std::free(tmpdeleteApp);
-	std::free(tmpdeleteApp2);
+	std::free(deleteApp);
 }
