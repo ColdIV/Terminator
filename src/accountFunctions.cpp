@@ -20,7 +20,7 @@ int validateLogin(const char *fname, char *user, char *password) {
 	}
 
 	int id = 0;
-	Account *accounts;
+	Account *accounts = NULL;
 	size_t size = 0;
 	accounts = (Account*)readStructs(fname, &size, sizeof(Account));
 
@@ -35,6 +35,7 @@ int validateLogin(const char *fname, char *user, char *password) {
 			return id;
 		}
 	}
+
 	free(accounts);
 	return 0;
 }

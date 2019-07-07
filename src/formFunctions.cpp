@@ -51,7 +51,7 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 
 			for (end = 0; *(str + end) && *(str + end) != separator; end++);
 
-			tmpStr = (char*)malloc(end * sizeof(char*));
+			tmpStr = (char*)malloc((end + 1) * sizeof(char*));
 
 			if (tmpStr == NULL) {
 				return NULL;
