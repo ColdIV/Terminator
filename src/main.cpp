@@ -166,9 +166,20 @@ int main(int argc, char** argv) {
 			}
 		}
 	} else if (strcmp(page, "appointmentEdit") == 0) {
-		if (contentLen == 0) {
-			// Show Form
-			htmlTemplatePart1 = getTemplate(fileTplEditAppointment);
+		// Show Form
+		const char *appointmentEditID = getValueOfKey(postData, (char*)"id");
+		if (appointmentEditID == NULL) {
+			htmlTemplatePart1 = getTemplate(fileTplError);
+		} else {
+			htmlTemplatePart1 = getTemplate(fileTplEditAppointment, "{{id}}", appointmentEditID);
+		}
+	} else if (strcmp(page, "appointmentEditP") == 0) {
+		if (appointmentChange(fileAppointments, user.id, postData)) {
+			// Changed appointment, show menu
+			htmlTemplatePart1 = getTemplate(fileTplMenue);
+		} else {
+			// Failed to change appointment, show error
+			htmlTemplatePart1 = getTemplate(fileTplError);
 		}
 	} else if (strcmp(page, "menu") == 0) {
 		htmlTemplatePart1 = getTemplate(fileTplMenue);
@@ -207,18 +218,12 @@ int main(int argc, char** argv) {
 								<< "\t<td>" << appointments[i].time << "</td>"
 								<< "\t<td>" << appointments[i].description << "</td>"								
 								<< "\t<td>"
-								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentEdit\" method=\"post\""
+								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentEdit\" method=\"post\">"
 								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
-								<< "\t\t\t<input type=\"hidden\" name=\"date\" value=\"" << appointments[i].date << "\">"
-								<< "\t\t\t<input type=\"hidden\" name=\"time\" value=\"" << appointments[i].time << "\">"
-								<< "\t\t\t<input type=\"hidden\" name=\"description\" value=\"" << appointments[i].description << "\">"
 								<< "\t\t\t<button type=\"submit\"><i class = 'fa fa - pencil'>&Auml;ndern</i></button>"
 								<< "\t\t</form>"
 								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentDelete\" method=\"post\""
 								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
-								<< "\t\t\t<input type=\"hidden\" name=\"date\" value=\"" << appointments[i].date << "\">"
-								<< "\t\t\t<input type=\"hidden\" name=\"time\" value=\"" << appointments[i].time << "\">"
-								<< "\t\t\t<input type=\"hidden\" name=\"description\" value=\"" << appointments[i].description << "\">"
 								<< "<button type=\"submit\"><i class = 'fa fa - trash'>l&ouml;schen</i></button>"
 								<< "\t\t</form>"
 								<< "\t</td>"

@@ -6,7 +6,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Termin anlegen</h5>
                            
-                           <form action="?page=appointmentEdit" method="post" autocomplete="off">
+                           <form action="?page=appointmentEditP" method="post" autocomplete="off">
                             <div class="form-group">
                             <label>Datum</label>
                            <input class="form-control mb-1" id="date" name="date" type="date" maxlength="10">
@@ -14,7 +14,7 @@
                            <input class="form-control mb-1" id="time" name="time" type="time" maxlength="4">
                            <label>Art</label>
                            <input type="text" class="form-control" id="art" name="description" maxlength="100">
-                           <input type="hidden" name="id" value="id">
+                           <input type="hidden" name="id" value="{{id}}">
                             </div>
 				    <button type="submit" id="lay_beside" class="btn btn-primary float-right">Termin &auml;ndern</button>
                             <a href="?page=menu"><button type="button" class="btn btn-primary float-left">Zurück</button></a>

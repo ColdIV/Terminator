@@ -112,7 +112,7 @@ char* getTemplate(const char *fname, const char *search, const char *replace) {
 
 			fclose(f);
 
-			if (search != NULL && replace && NULL) {
+			if (search != NULL && replace != NULL) {
 				char *find = strstr(buffer, search);
 				char *tmpStr = (char*)malloc(strlen(buffer) * sizeof(char));
 				int pos = 0;
