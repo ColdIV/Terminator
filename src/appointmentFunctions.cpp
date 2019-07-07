@@ -204,10 +204,11 @@ bool appointmentChange(const char *fname, int aUserID, char *postData) {
 			strcpy(appointments[i].date, aDate);
 			strcpy(appointments[i].time, aTime);
 			strcpy(appointments[i].description, aDescription);
+			break;
 		}
 	}
 
-	writeStructs((char*)fname, appointments, amount + 1, sizeof(Appointment));
+	writeStructs((char*)fname, appointments, amount, sizeof(Appointment));
 
 	free(aDate);
 	free(aTime);
