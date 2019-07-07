@@ -1,10 +1,11 @@
 #pragma warning( disable : 4996)
 #include <iostream>
+#include <string.h>
+#include <stdlib.h>
 #include "fileFunctions.h"
 #include "formFunctions.h"
 #include "accountFunctions.h"
-#include <string.h>
-#include <stdlib.h>
+#include "appointmentFunctions.h"
 
 
 struct User {
@@ -21,10 +22,18 @@ int main(int argc, char** argv) {
 
 	// Filenames
 	const char *fileAccounts = "accounts.bin";
+	const char *fileAppointments = "appointments.bin";
+	const char *fileTplHead = "templates/head.html";
 	const char *fileTplLogin = "templates/login.html";
+	const char *fileTplLoginError = "templates/loginError.html";
 	const char *fileTplRegister = "templates/register.html";
 	const char *fileTplMenue = "templates/menue.html";
-	const char *fileTplHead = "templates/head.html";
+
+	const char* fileTplAppointment1 = "templates/showAppointment1.html";
+	const char* fileTplAppointment2 = "templates/showAppointment2.html";
+	const char* fileTplAddAppointment = "templates/addAppointment.html";
+	const char* fileTplError = "templates/error.html";
+	const char* fileTplDeleted = "templates/delete.html";
 
 	// Get length of POST data
 	char *tmpContentLen = getenv("CONTENT_LENGTH");
@@ -100,6 +109,10 @@ int main(int argc, char** argv) {
 
 	} 
 
+	// Variables we might need later
+	Appointment *appointments = NULL;
+	size_t appointmentAmount = 0;
+
 	// @TODO: Delete this (DEBUG)
 	/*std::cout << "Content-type:text/html\r\n\r\n";*/
 
@@ -115,6 +128,7 @@ int main(int argc, char** argv) {
 				htmlTemplatePart1 = getTemplate(fileTplMenue);
 			} else {
 				// Login failed, show error
+				htmlTemplatePart1 = getTemplate(fileTplLoginError);
 			}
 		}
 	} else if (strcmp(page, "register") == 0) {
@@ -134,15 +148,20 @@ int main(int argc, char** argv) {
 			}
 		}
 	} else if (strcmp(page, "appointments") == 0) {
+		// Show Appointments HTML (Handling of Appointments below)
+		htmlTemplatePart1 = getTemplate(fileTplAppointment1);
+		htmlTemplatePart2 = getTemplate(fileTplAppointment2);
+	} else if (strcmp(page, "appointmentAdd") == 0) {
 		if (contentLen == 0) {
-			// Show Appointments HTML
+			// Show Form
+			htmlTemplatePart1 = getTemplate(fileTplAddAppointment);
 		} else {
-			// Handle appointments postData (add, edit, delete?, maybe add more "pages" for that)
-			// Add Appointment
-			if (1/*handleAppointment*/) {
-				// Success, show appointments
+			if (appointmentAdd(fileAppointments, user.name, user.id, postData)) {
+				// Added appointment, show menu
+				htmlTemplatePart1 = getTemplate(fileTplMenue);
 			} else {
-				// Failed, show error
+				// Failed to add appointment, show error
+				htmlTemplatePart1 = getTemplate(fileTplError);
 			}
 		}
 	} else if (strcmp(page, "menu") == 0) {
@@ -156,6 +175,7 @@ int main(int argc, char** argv) {
 		htmlTemplatePart1 = getTemplate(fileTplLogin);
 	}
 
+
 	// Show HTML Template
 	std::cout << "Content-type:text/html\r\n\r\n";
 	char *htmlHead = getTemplate(fileTplHead);
@@ -167,8 +187,26 @@ int main(int argc, char** argv) {
 		std::cout << htmlTemplatePart1 << std::endl;
 	}
 
-	if (strcmp(page, "appointment") == 0) {
+	if (strcmp(page, "appointments") == 0) {
 		// Show appointments
+		appointments = (Appointment*)readStructs(fileAppointments, &appointmentAmount, sizeof(Appointment));
+
+		if (appointments != NULL) {
+			// Check if User has appointments to show
+			for (int i = 0; i < appointmentAmount; i++) {
+				if (user.id == appointments[i].userId) {
+					std::cout	<< "<tr>"
+								<< "\t<td>" << appointments[i].appointmentId << "</td>"
+								<< "\t<td>" << appointments[i].date << "</td>"
+								<< "\t<td>" << appointments[i].time << "</td>"
+								<< "\t<td>" << appointments[i].description << "</td>"
+								<< "\t<td><button><i class = 'fa fa - pencil'>&Auml;ndern</i></button><button><i class = 'fa fa - trash'>l&Ouml;schen</i></button></td>"
+								<< "</tr>";
+				}
+			}
+
+			free(appointments);
+		}
 	} /* else {
 	  // Same for other pages
 	} */

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "fileFunctions.h"
 #include "formFunctions.h"
+#include "appointmentFunctions.h"
 #include <string.h>
 //
 ///*
@@ -253,52 +254,10 @@
 
 
 int main3() {
-	const char *data = "username=test&password=test&repeatPassword=test";
+	char *data = (char*)"date=1234234&time=1231231&description=terst21321";
 	
-
-	/* FUNCTION */
-	char *user = NULL;
-	char *password = NULL;
-	char *repeatPassword = NULL;
-
-	bool valuesValid = true;
-
-
-	std::cout << "getValOfKey: username" << std::endl;
-	user = getValueOfKey(data, (char*)"username");
-
-	if (user == NULL) {
-
-		return false;
-	}
-
-	std::cout << "getValOfKey: password" << std::endl;
-	password = getValueOfKey(data, (char*)"password");
-	if (password == NULL) {
-		free(user);
-		return false;
-	}
-
-	std::cout << "getValOfKey: repeatPassword" << std::endl;
-	repeatPassword = getValueOfKey(data, (char*)"repeatPassword");
-
-	if (repeatPassword == NULL) {
-		free(user);
-		free(password);
-		return false;
-	}
-
-	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1) {
-		valuesValid = false;
-	}
-
-	if (strcmp(password, repeatPassword) != 0) {
-		valuesValid = false;
-	}
-	/* END FUNCTION */
-
-	std::cout << "valuesValid: " << valuesValid << std::endl;
-
+	std::cout << "lets go" << std::endl;
+	std::cout << appointmentAdd("appointments.bin", (char*)"test", 0, data) << std::endl;
 
 
 	system("pause");

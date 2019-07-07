@@ -1,3 +1,4 @@
+#pragma warning( disable : 4996)
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -12,59 +13,59 @@ const char* fileTplDeleted = "templates/delete.html";
 char *htmlTemplatePart = NULL;
 char *htmlTemplatePart3 = NULL;
 
-bool appointmentHTMLoutput(const char fname, char* user) {
-	Appointment *outputHTML = NULL;
-	size_t size = 0;
-	outputHTML = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+//bool appointmentHTMLoutput(const char fname, char* user) {
+//	Appointment *outputHTML = NULL;
+//	size_t size = 0;
+//	outputHTML = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+//
+//	for (size_t i = 0; i < size; i++) {
+//		if (strcmp((char*)outputHTML[i].userId,user)){
+//			htmlTemplatePart = getTemplate(fileTplError);
+//			return false;
+//		}
+//		if(!strcmp((char*)outputHTML[i].userId,user)){
+//			for(int i = 0; i <= size; i++) {
+//				while (!strcmp((char*)outputHTML[i].userId, user)); {
+//					std::cout << "Content-type:text/html\r\n\r\n";
+//					std::cout << "<tr>";
+//					std::cout << "<td>" << outputHTML[size].appointmentId << "< / td>";
+//					std::cout << "<td>" << outputHTML[size].date << "< / td>";
+//					std::cout << "<td>" << outputHTML[size].time << "< / td>";
+//					std::cout << "<td>" << outputHTML[size].description << ";< / td>";
+//					std::cout << "<td><button><i class = 'fa fa - pencil'>ändern< / i>< / button><button><i class = 'fa fa - trash'>löschen< / i>< / button>< / td>";
+//					std::cout << "< / tr>";
+//				}
+//			}
+//		}
+//	
+//	}
+//}
 
-	for (size_t i = 0; i < size; i++) {
-		if (strcmp((char*)outputHTML[i].userId,user)){
-			htmlTemplatePart = getTemplate(fileTplError);
-			return false;
-		}
-		if(!strcmp((char*)outputHTML[i].userId,user)){
-			for(int i = 0; i <= size; i++) {
-				while (!strcmp((char*)outputHTML[i].userId, user)); {
-					std::cout << "Content-type:text/html\r\n\r\n";
-					std::cout << "<tr>";
-					std::cout << "<td>" << outputHTML[size].appointmentId << "< / td>";
-					std::cout << "<td>" << outputHTML[size].date << "< / td>";
-					std::cout << "<td>" << outputHTML[size].time << "< / td>";
-					std::cout << "<td>" << outputHTML[size].description << ";< / td>";
-					std::cout << "<td><button><i class = 'fa fa - pencil'>ändern< / i>< / button><button><i class = 'fa fa - trash'>löschen< / i>< / button>< / td>";
-					std::cout << "< / tr>";
-				}
-			}
-		}
-	
-	}
-}
-
-bool makeAppointmentID(const char fname){
-	size_t size = 0;
-	Appointment* makeApp = 0;
-
-	makeApp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
-
-	int tmp = 0;
-	//search for the highest appointmentId
-	for (size_t i = 0; i < size; i++) {
-		if (tmp < makeApp[i].appointmentId) {
-			tmp = makeApp[i].appointmentId;
-		}
-		//give the last(new) appointment an unique ID
-		else if (tmp == makeApp[i].appointmentId) {
-			tmp + 1;
-			makeApp[i+1].appointmentId = makeApp[i+1].appointmentId = tmp;
-			writeStructs(&fname, makeApp, i + 1, sizeof(Appointment));
-			return true;
-		}
-		else {
-			htmlTemplatePart = getTemplate(fileTplError);
-			return false;
-		}
-	}
-}
+//bool makeAppointmentID(const char fname){
+//	size_t size = 0;
+//	Appointment* makeApp = 0;
+//
+//	makeApp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+//
+//	int tmp = 0;
+//	//search for the highest appointmentId
+//	for (size_t i = 0; i < size; i++) {
+//		if (tmp < makeApp[i].appointmentId) {
+//			tmp = makeApp[i].appointmentId;
+//		}
+//		//give the last(new) appointment an unique ID
+//		else if (tmp == makeApp[i].appointmentId) {
+//			tmp + 1;
+//			makeApp[i+1].appointmentId = makeApp[i+1].appointmentId = tmp;
+//			writeStructs(&fname, makeApp, i + 1, sizeof(Appointment));
+//			return true;
+//		}
+//		else {
+//			htmlTemplatePart = getTemplate(fileTplError);
+//			return false;
+//		}
+//	}
+//}
 bool getDataApp(char* data) {
 	char* sdate = NULL;
 	char* stime = NULL;
@@ -77,51 +78,78 @@ bool getDataApp(char* data) {
 	stime = getValueOfKey(data, (char*)"time");
 	sdescription = getValueOfKey(data, (char*)"description");
 	sappointmentId = getValueOfKey(data, (char*)"appointmentId");
+
+	return false;
 }
 
-bool appointmentAdd(const char fname, char* sdate, char* stime, char* sdescription) {
-	Appointment* addAp;
-	Appointment* tmpAdd;
-	int givenUserId = 13;
-	size_t size = 0;
+bool appointmentAdd(const char *fname, char *aUser, int aUserID, char *postData) {
+	Appointment* appointments = NULL;
+	Appointment* tmpAppointment = NULL;
+	size_t amount = 0;
 
-	// prüfen ob der cookie noch stimmt
+	char *aDate = NULL;
+	char *aTime = NULL;
+	char *aDescription = NULL;
 
-	addAp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+	aDate = getValueOfKey(postData, (char*)"date");
+	if (aDate == NULL) {
+		return false;
+	}
 
-	if (addAp == NULL) {
+	aTime = getValueOfKey(postData, (char*)"time");
+	if (aTime == NULL) {
+		free(aDate);
+		return false;
+	}
+
+	aDescription = getValueOfKey(postData, (char*)"description");
+	if (aDescription == NULL) {
+		free(aDate);
+		free(aTime);
+		return false;
+	}
+
+
+	// Read all appointments
+	appointments = (Appointment*)readStructs(fname, &amount, sizeof(Appointment));
+
+	if (appointments == NULL) {
 		// Create first Appointment
-		addAp = (Appointment*)malloc((size + 1) * sizeof(Appointment));
-		//addAp[nr].appointmentId = 0;extra leer gelassen wg makeAppointmentID
+		appointments = (Appointment*)malloc((amount + 1) * sizeof(Appointment));
 		
-		strcpy_s((char*)addAp[size].date,100, sdate);
-		strcpy_s((char*)addAp[size].time,100, stime);
-		strcpy_s((char*)addAp[size].description,200, sdescription);
+		appointments[amount].appointmentId = 0;
+		appointments[amount].userId = aUserID;
+		strcpy(appointments[amount].date, aDate);
+		strcpy(appointments[amount].time, aTime);
+		strcpy(appointments[amount].description, aDescription);
+	} else {
+		// Expand array and add new appointment
+		tmpAppointment = (Appointment*)realloc(appointments, (amount + 1) * sizeof(Appointment));
 
-		makeAppointmentID(fname);
-		if (addAp == NULL) {
+		if (tmpAppointment == NULL) {
+			free(appointments);
+			free(aDate);
+			free(aTime);
+			free(aDescription);
 			return false;
 		}
+
+		appointments = tmpAppointment;
+
+		appointments[amount].appointmentId = appointments[amount - 1].appointmentId + 1;
+		appointments[amount].userId = aUserID;
+		strcpy(appointments[amount].date, aDate);
+		strcpy(appointments[amount].time, aTime);
+		strcpy(appointments[amount].description, aDescription);
 	}
-	if (addAp != NULL) {
-		tmpAdd = (Appointment*)realloc(addAp, (size + 1) * sizeof(Appointment));
 
-		addAp = tmpAdd;
+	writeStructs((char*)fname, appointments, amount + 1, sizeof(Appointment));
+	
+	free(aDate);
+	free(aTime);
+	free(aDescription);
 
-		if (tmpAdd == NULL) {
-			std::free(addAp);
-			return false;
-		}
-
-		strcpy_s((char*)addAp[size].date,100, sdate);
-		strcpy_s((char*)addAp[size].time,100, stime);
-		strcpy_s((char*)addAp[size].description,200, sdescription);
-		makeAppointmentID(fname);
-
-	}
-	writeStructs((char*)fname, addAp, size + 1, sizeof(Appointment));
-
-	return 1;
+	return true;
 }
 
 bool appointmentChange(const char fname, char* sdate, char* stime, char* sdescription) {
