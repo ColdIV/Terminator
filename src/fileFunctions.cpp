@@ -95,7 +95,7 @@ void writeStructs(const char *fname, void *data, size_t num, size_t element_size
 
 	ATTENTION: Make sure to free(buffer) when you are done using it!
 */
-char* getTemplate(const char *fname) {
+char* getTemplate(const char *fname, const char *search, const char *replace) {
 	char *buffer;
 	long size;
 	FILE *f = fopen(fname, "rb");
@@ -111,6 +111,22 @@ char* getTemplate(const char *fname) {
 			buffer[size] = '\0';
 
 			fclose(f);
+
+			if (search != NULL && replace && NULL) {
+				char *find = strstr(buffer, search);
+				char *tmpStr = (char*)malloc(strlen(buffer) * sizeof(char));
+				int pos = 0;
+				if (find != NULL && tmpStr != NULL) {
+					strcpy(tmpStr, buffer);
+					// Store first part (till found word) in buffer
+					pos = find - buffer;
+					buffer[pos] = '\0';
+					// Append new content
+					strcat(buffer, replace);
+					strcat(buffer, (char*)tmpStr + pos + strlen(search));
+				}
+			}
+
 			return buffer;
 		}
 

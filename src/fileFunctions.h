@@ -4,6 +4,6 @@
 void* readStructs(const char *fname, size_t *num, size_t element_size);
 void* readNthStruct(const char *fname, size_t n, size_t element_size);
 void writeStructs(const char *fname, void *data, size_t num, size_t element_size);
-char* getTemplate(const char *fname);
+char* getTemplate(const char *fname, const char *search = NULL, const char *replace = NULL);
 
 #endif
