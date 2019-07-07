@@ -15,7 +15,7 @@ struct Session {
 	char value[62];
 };
 
-int main() {
+int main2() {
 	// Alphabet for 'encrypting'
 	const char *alphabet = "pekRrNfwYTOZsXLbmu0t6l18gIoJqcCB9y2KQixGv57aDhASzn3VFjMWPUEdH4";
 

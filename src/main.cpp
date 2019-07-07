@@ -77,7 +77,8 @@ int main(int argc, char** argv) {
 		cookieUsername = (char*)"";
 	}
 
-	if (strcmp(page, "default") != 0 && strcmp(page, "register") != 0 && (page, "login") != 0 && strcmp(cookieUsername, "") != 0) {
+	// @TODO: Cleanup
+	if (/*strcmp(page, "default") != 0 && strcmp(page, "register") != 0 && (page, "login") != 0 && */strcmp(cookieUsername, "") != 0) {
 		// Create user
 		// @TODO: Check if data is valid, maybe some security stuff. No clue, need sleep.
 		char *userID;
@@ -90,9 +91,17 @@ int main(int argc, char** argv) {
 			free(userID);
 			strcpy(user.name, cookieUsername);
 			user.loggedIn = true;
+
+			if (strcmp(page, "default") == 0 || strcmp(page, "register") == 0 || strcmp(page, "login") == 0) {
+				page = (char*)malloc(5 * sizeof(char));
+				strcpy(page, "menu");
+			}
 		}
 
 	} 
+
+	// @TODO: Delete this (DEBUG)
+	/*std::cout << "Content-type:text/html\r\n\r\n";*/
 
 
 	// Routing
@@ -140,6 +149,7 @@ int main(int argc, char** argv) {
 		htmlTemplatePart1 = getTemplate(fileTplMenue);
 	} else if (strcmp(page, "logout") == 0) {
 		setCookie("name", (char*)"");
+		setCookie("id", (char*)"");
 		htmlTemplatePart1 = getTemplate(fileTplLogin);
 	} else {
 		// Error 404 (Lazy, so just back to login)
