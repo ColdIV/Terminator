@@ -216,50 +216,106 @@ bool appointmentChange(const char *fname, int aUserID, char *postData) {
 
 	return true;
 }
-bool deleteAppoi(const char fname, char* sappointmentId) {
 
-	Appointment* deleteApp;
-	Appointment* tmpdeleteApp;
-	Appointment* tmpdeleteApp2;
-	size_t size = 0;
-	int givenAppID = *sappointmentId; 
+bool deleteAppointment(const char *fname, int aUserID, int aID) {
+	Appointment *appointments = NULL;
+	Appointment *tmpAppointment = NULL;
+	size_t amount = 0;
+	
+	appointments = (Appointment*)readStructs(fname, &amount, sizeof(Appointment));
+	
+	if (appointments == NULL) {
+		return false;
+	}
 
-	deleteApp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+	if (amount <= 1) {
+		free(appointments);
+		return remove(fname) == 0;
+	}
 
-	for (size_t i = 0; i < size; i++) {
-		if (!strcmp((char*)deleteApp[size].appointmentId, (char*)givenAppID)) {
-			return false;
-		}
-		else if (strcmp((char*)deleteApp[size].appointmentId, (char*)givenAppID)) {
-			tmpdeleteApp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
-			tmpdeleteApp2 = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
-			/*
-			tmp[n] =n+1;
-			m[n] = n+1;
-			m[n-1] = tmp[2];
-			*/
-			if (size == sizeof(Appointment)) {
-				htmlTemplatePart3 = getTemplate(fileTplDeleted);
-				return true;
-			}
-			else if(size < sizeof(Appointment)) {
-				for (size_t i = 0; i = size; i ++ ) {
-					tmpdeleteApp2[i].appointmentId = tmpdeleteApp2[size + 1].appointmentId;
-					tmpdeleteApp[i].appointmentId = tmpdeleteApp[size + 1].appointmentId;
-					//tmpdeleteApp[i].appointmentId = tmpdeleteApp2[i].appointmentId; 
-					tmpdeleteApp[i -1].appointmentId = tmpdeleteApp2[i].appointmentId;
-				}
-				htmlTemplatePart3 = getTemplate(fileTplDeleted);
-			}
-		else {
-				htmlTemplatePart = getTemplate(fileTplError);
-			return false;
-		}
-
-		deleteApp = (Appointment*)realloc(tmpdeleteApp, (size - 1) * sizeof(Appointment));
-
-		writeStructs(&fname, deleteApp, size, sizeof(Appointment));
+	// Find position of appointment
+	int appointmentPos = -1;
+	for (int i = 0; i < amount; i++) {
+		if (appointments[i].userId == aUserID && appointments[i].appointmentId == aID) {
+			appointmentPos = i;
+			break;
 		}
 	}
-	std::free(deleteApp);
+
+	if (appointmentPos == -1) {
+		free(appointments);
+		return false;
+	}
+
+	// Move content to the left
+	for (int i = appointmentPos; i < (amount - 1); i++) {
+		appointments[i].userId = appointments[i + 1].userId;
+		appointments[i].appointmentId = appointments[i + 1].appointmentId;
+		strcpy(appointments[i].date, appointments[i + 1].date);
+		strcpy(appointments[i].time, appointments[i + 1].time);
+		strcpy(appointments[i].description, appointments[i + 1].description);
+	}
+
+	// Decrease array size by 1
+	tmpAppointment = (Appointment*)realloc(appointments, (amount - 1) * sizeof(Appointment));
+
+	if (tmpAppointment == NULL) {
+		free(appointments);
+		return false;
+	}
+
+	appointments = tmpAppointment;
+	
+	writeStructs(fname, appointments, amount - 1, sizeof(Appointment));
+
+	free(appointments);
+
+	return true;
 }
+//bool deleteAppointment(const char fname, char* sappointmentId) {
+//
+//	Appointment* deleteApp;
+//	Appointment* tmpdeleteApp;
+//	Appointment* tmpdeleteApp2;
+//	size_t size = 0;
+//	int givenAppID = *sappointmentId; 
+//
+//	deleteApp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+//
+//	for (size_t i = 0; i < size; i++) {
+//		if (!strcmp((char*)deleteApp[size].appointmentId, (char*)givenAppID)) {
+//			return false;
+//		}
+//		else if (strcmp((char*)deleteApp[size].appointmentId, (char*)givenAppID)) {
+//			tmpdeleteApp = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+//			tmpdeleteApp2 = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
+//			/*
+//			tmp[n] =n+1;
+//			m[n] = n+1;
+//			m[n-1] = tmp[2];
+//			*/
+//			if (size == sizeof(Appointment)) {
+//				htmlTemplatePart3 = getTemplate(fileTplDeleted);
+//				return true;
+//			}
+//			else if(size < sizeof(Appointment)) {
+//				for (size_t i = 0; i = size; i ++ ) {
+//					tmpdeleteApp2[i].appointmentId = tmpdeleteApp2[size + 1].appointmentId;
+//					tmpdeleteApp[i].appointmentId = tmpdeleteApp[size + 1].appointmentId;
+//					//tmpdeleteApp[i].appointmentId = tmpdeleteApp2[i].appointmentId; 
+//					tmpdeleteApp[i -1].appointmentId = tmpdeleteApp2[i].appointmentId;
+//				}
+//				htmlTemplatePart3 = getTemplate(fileTplDeleted);
+//			}
+//		else {
+//				htmlTemplatePart = getTemplate(fileTplError);
+//			return false;
+//		}
+//
+//		deleteApp = (Appointment*)realloc(tmpdeleteApp, (size - 1) * sizeof(Appointment));
+//
+//		writeStructs(&fname, deleteApp, size, sizeof(Appointment));
+//		}
+//	}
+//	std::free(deleteApp);
+//}

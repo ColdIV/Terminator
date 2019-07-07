@@ -12,6 +12,6 @@ struct Appointment {
 bool getDataApp(char* data); 
 bool appointmentAdd(const char *fname, int aUserID, char *postData);
 bool appointmentChange(const char *fname, int aUserID, char *postData);
-bool deleteAppoi(const char fname, char* sappointmentId);
+bool deleteAppointment(const char *fname, int aUserID, int aID);
 
 #endif

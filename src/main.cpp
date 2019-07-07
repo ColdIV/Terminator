@@ -177,9 +177,20 @@ int main(int argc, char** argv) {
 		if (appointmentChange(fileAppointments, user.id, postData)) {
 			// Changed appointment, show menu
 			htmlTemplatePart1 = getTemplate(fileTplMenue);
-		} else {
+		}
+		else {
 			// Failed to change appointment, show error
 			htmlTemplatePart1 = getTemplate(fileTplError);
+		}
+	} else if (strcmp(page, "appointmentDelete") == 0) {
+		const char *appointmentDeleteID = getValueOfKey(postData, (char*)"id");
+		if (appointmentDeleteID == NULL) {
+			htmlTemplatePart1 = getTemplate(fileTplError);
+		} else {
+			if (deleteAppointment(fileAppointments, user.id, atoi(appointmentDeleteID))) {
+				// Deleted appointment, show menu
+				htmlTemplatePart1 = getTemplate(fileTplMenue);
+			}
 		}
 	} else if (strcmp(page, "menu") == 0) {
 		htmlTemplatePart1 = getTemplate(fileTplMenue);
@@ -222,7 +233,7 @@ int main(int argc, char** argv) {
 								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
 								<< "\t\t\t<button type=\"submit\"><i class = 'fa fa - pencil'>&Auml;ndern</i></button>"
 								<< "\t\t</form>"
-								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentDelete\" method=\"post\""
+								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentDelete\" method=\"post\">"
 								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
 								<< "<button type=\"submit\"><i class = 'fa fa - trash'>l&ouml;schen</i></button>"
 								<< "\t\t</form>"
