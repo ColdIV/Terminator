@@ -51,6 +51,7 @@ bool createAccount(const char *fname, char *user, char *password) {
 	Account *accounts;
 	Account *tmpAccounts;
 	size_t size = 0;
+
 	accounts = (Account*)readStructs(fname, &size, sizeof(Account));
 
 	if (accounts == NULL) {
@@ -122,7 +123,6 @@ bool login(const char *fname, char *data) {
 	
 	if (userID) {
 		userID--;
-		//sprintf(id, "%d", userID);
 		_itoa_s(userID, id, 10);
 		setCookie("id", id);
 		setCookie("name", user);
@@ -151,6 +151,7 @@ bool registerUser(const char *fname, char *data) {
 	bool valuesValid = true;
 
 	user = getValueOfKey(data, (char*)"username");
+
 	if (user == NULL) {
 		return false;
 	}
@@ -168,7 +169,6 @@ bool registerUser(const char *fname, char *data) {
 		return false;
 	}
 
-
 	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1){
 		valuesValid = false;
 	}
@@ -176,7 +176,6 @@ bool registerUser(const char *fname, char *data) {
 	if (strcmp(password, repeatPassword) != 0) {
 		valuesValid = false;
 	}
-
 
 	if (valuesValid && createAccount(fname, user, password)) {
 		login(fname, data);

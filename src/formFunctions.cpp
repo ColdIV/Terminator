@@ -24,7 +24,7 @@
 	Note: Those are NOT secure credentials!
 */
 char* getValueOfKey(const char *str, char *key, char separator) {
-	int end = 0;
+	int start = 0, end = 0;
 	char *tmpStr;
 	char *tmpKey = key;
 
@@ -32,46 +32,46 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 		return NULL;
 	}
 
-	if (*str == '?') str++;
+	if (*(str + start) == '?') start++;
 
-	if (*str && *str != *tmpKey) {
+	if (*(str + start) && *(str + start) != *tmpKey) {
 		do {
-			while (*str && *str != separator) str++;
-			str++;
-			if (separator == ';') str++;
-		} while (*str && *str != *tmpKey);
+			while (*(str + start) && *(str + start) != separator) start++;
+			start++;
+			if (separator == ';') start++;
+		} while (*(str + start) && *(str + start) != *tmpKey);
 	}
 
-	while (*tmpKey && *str && *str == *tmpKey) {
-		str++;
+	while (*tmpKey && *(str + start) && *(str + start) == *tmpKey) {
+		start++;
 		tmpKey++;
 
-		if (!*tmpKey && *str == '=') {
-			str++;
+		if (!*tmpKey && *(str + start) == '=') {
+			start++;
 
-			for (end = 0; *(str + end) && *(str + end) != separator; end++);
+			for (end = 0; *(str + start + end) && *(str + start + end) != separator; end++);
 
-			tmpStr = (char*)malloc((end + 1) * sizeof(char*));
+			tmpStr = (char*)malloc((start + end) * sizeof(char*));
 
 			if (tmpStr == NULL) {
 				return NULL;
 			}
 
-			strcpy(tmpStr, str);
+			strcpy(tmpStr, (str + start));
 			tmpStr[end] = '\0';
 
 			return tmpStr;
 		}
 
-		if ((!*tmpKey && *str != '=') || (*str != *tmpKey)) {
+		if ((!*tmpKey && *(str + start) != '=') || (*(str + start) != *tmpKey)) {
 			tmpKey = key;
 
-			if (*str && *str != *key) {
+			if (*(str + start) && *(str + start) != *key) {
 				do {
-					while (*str && *str != separator) str++;
-					str++;
-					if (separator == ';') str++;
-				} while (*str && *str != *tmpKey);
+					while (*(str + start) && *(str + start) != separator) start++;
+					start++;
+					if (separator == ';') start++;
+				} while (*(str + start) && *(str + start) != *tmpKey);
 			}
 		}
 	}
