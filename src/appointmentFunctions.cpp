@@ -8,7 +8,7 @@
 #include "appointmentFunctions.h"
 
 const char* fileTplError = "templates/error.html";
-const char* fileTplDeleted = "templates/deleted.html";
+const char* fileTplDeleted = "templates/delete.html";
 char *htmlTemplatePart = NULL;
 char *htmlTemplatePart3 = NULL;
 
@@ -138,7 +138,7 @@ bool appointmentChange(const char fname, char* sdate, char* stime, char* sdescri
 		return false;
 	}
 	for (size_t i = 0; i < size; i++) {
-		if (!strcmp((char*)apChange[size].appointmentId, (char*)givenAppID)) {
+		if (strcmp((char*)apChange[size].appointmentId, (char*)givenAppID)) {
 			return false;
 		}
 		else if (!strcmp((char*)apChange[size].appointmentId, (char*)givenAppID)) {
