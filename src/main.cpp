@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
 	const char* fileTplAppointment1 = "templates/showAppointment1.html";
 	const char* fileTplAppointment2 = "templates/showAppointment2.html";
 	const char* fileTplAddAppointment = "templates/addAppointment.html";
+	const char* fileTplEditAppointment = "templates/editAppointment.html";
 	const char* fileTplError = "templates/error.html";
 	const char* fileTplDeleted = "templates/delete.html";
 
@@ -156,13 +157,18 @@ int main(int argc, char** argv) {
 			// Show Form
 			htmlTemplatePart1 = getTemplate(fileTplAddAppointment);
 		} else {
-			if (appointmentAdd(fileAppointments, user.name, user.id, postData)) {
+			if (appointmentAdd(fileAppointments, user.id, postData)) {
 				// Added appointment, show menu
 				htmlTemplatePart1 = getTemplate(fileTplMenue);
 			} else {
 				// Failed to add appointment, show error
 				htmlTemplatePart1 = getTemplate(fileTplError);
 			}
+		}
+	} else if (strcmp(page, "appointmentEdit") == 0) {
+		if (contentLen == 0) {
+			// Show Form
+			htmlTemplatePart1 = getTemplate(fileTplEditAppointment);
 		}
 	} else if (strcmp(page, "menu") == 0) {
 		htmlTemplatePart1 = getTemplate(fileTplMenue);
@@ -195,12 +201,27 @@ int main(int argc, char** argv) {
 			// Check if User has appointments to show
 			for (int i = 0; i < appointmentAmount; i++) {
 				if (user.id == appointments[i].userId) {
-					std::cout	<< "<tr>"
+					std::cout	<< "<tr>"								
 								<< "\t<td>" << appointments[i].appointmentId << "</td>"
 								<< "\t<td>" << appointments[i].date << "</td>"
 								<< "\t<td>" << appointments[i].time << "</td>"
-								<< "\t<td>" << appointments[i].description << "</td>"
-								<< "\t<td><button><i class = 'fa fa - pencil'>&Auml;ndern</i></button><button><i class = 'fa fa - trash'>l&Ouml;schen</i></button></td>"
+								<< "\t<td>" << appointments[i].description << "</td>"								
+								<< "\t<td>"
+								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentEdit\" method=\"post\""
+								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"date\" value=\"" << appointments[i].date << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"time\" value=\"" << appointments[i].time << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"description\" value=\"" << appointments[i].description << "\">"
+								<< "\t\t\t<button type=\"submit\"><i class = 'fa fa - pencil'>&Auml;ndern</i></button>"
+								<< "\t\t</form>"
+								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentDelete\" method=\"post\""
+								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"date\" value=\"" << appointments[i].date << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"time\" value=\"" << appointments[i].time << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"description\" value=\"" << appointments[i].description << "\">"
+								<< "<button type=\"submit\"><i class = 'fa fa - trash'>l&ouml;schen</i></button>"
+								<< "\t\t</form>"
+								<< "\t</td>"
 								<< "</tr>";
 				}
 			}

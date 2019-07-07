@@ -82,7 +82,7 @@ bool getDataApp(char* data) {
 	return false;
 }
 
-bool appointmentAdd(const char *fname, char *aUser, int aUserID, char *postData) {
+bool appointmentAdd(const char *fname, int aUserID, char *postData) {
 	Appointment* appointments = NULL;
 	Appointment* tmpAppointment = NULL;
 	size_t amount = 0;
@@ -152,34 +152,68 @@ bool appointmentAdd(const char *fname, char *aUser, int aUserID, char *postData)
 	return true;
 }
 
-bool appointmentChange(const char fname, char* sdate, char* stime, char* sdescription) {
-	Appointment* apChange;
-	size_t size = 0;
-	int givenAppID = 13;
+bool appointmentChange(const char *fname, int aUserID, char *postData) {
+	Appointment *appointments;
+	size_t amount = 0;
 
-	// prüfen ob der cookie noch stimmt
+	char *aDate = NULL;
+	char *aTime = NULL;
+	char *aDescription = NULL;
+	char *caID = NULL;
+	int aID = -1;
 
-	apChange = (Appointment*)readStructs(&fname, &size, sizeof(Appointment));
-
-	if (apChange == NULL) {
-		htmlTemplatePart = getTemplate(fileTplError);
+	aDate = getValueOfKey(postData, (char*)"date");
+	if (aDate == NULL) {
 		return false;
 	}
-	for (size_t i = 0; i < size; i++) {
-		if (strcmp((char*)apChange[size].appointmentId, (char*)givenAppID)) {
-			return false;
-		}
-		else if (!strcmp((char*)apChange[size].appointmentId, (char*)givenAppID)) {
-			
-			strcpy_s((char*)apChange[size].date,100, sdate);
-			strcpy_s((char*)apChange[size].time,100, stime);
-			strcpy_s((char*)apChange[size].description,200, sdescription);
+
+	aTime = getValueOfKey(postData, (char*)"time");
+	if (aTime == NULL) {
+		free(aDate);
+		return false;
+	}
+
+	aDescription = getValueOfKey(postData, (char*)"description");
+	if (aDescription == NULL) {
+		free(aDate);
+		free(aTime);
+		return false;
+	}
+
+	caID = getValueOfKey(postData, (char*)"id");
+	if (caID == NULL) {
+		free(aDate);
+		free(aTime);
+		free(aDescription);
+		return false;
+	}
+	aID = atoi(caID);
+	free(caID);
+
+	appointments = (Appointment*)readStructs(fname, &amount, sizeof(Appointment));
+
+	if (appointments == NULL) {
+		free(aDate);
+		free(aTime);
+		free(aDescription);
+		return false;
+	}
+
+	for (size_t i = 0; i < amount; i++) {
+		if (appointments[i].userId == aUserID && appointments[i].appointmentId == aID) {
+			strcpy(appointments[i].date, aDate);
+			strcpy(appointments[i].time, aTime);
+			strcpy(appointments[i].description, aDescription);
 		}
 	}
 
-	writeStructs((char*)fname, apChange, size + 1, sizeof(Appointment));
+	writeStructs((char*)fname, appointments, amount + 1, sizeof(Appointment));
 
-	return 1;
+	free(aDate);
+	free(aTime);
+	free(aDescription);
+
+	return true;
 }
 bool deleteAppoi(const char fname, char* sappointmentId) {
 

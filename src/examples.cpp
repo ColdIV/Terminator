@@ -257,7 +257,7 @@ int main3() {
 	char *data = (char*)"date=1234234&time=1231231&description=terst21321";
 	
 	std::cout << "lets go" << std::endl;
-	std::cout << appointmentAdd("appointments.bin", (char*)"test", 0, data) << std::endl;
+	std::cout << appointmentAdd("appointments.bin", 0, data) << std::endl;
 
 
 	system("pause");
