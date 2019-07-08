@@ -10,7 +10,8 @@
 #include <time.h>
 
 /*
-	Cover your eyes, this is stupid.
+	A bit short on time, so cover your eyes - this is stupid.
+	Fixes the ':' of time.
 */
 char* fixTime(char *t) {
 	char *tmpStr = (char*)malloc(sizeof(char) * 6);
@@ -59,6 +60,13 @@ int compare(const void *p1, const void *p2) {
 	return 0;
 }
 
+/*
+	This function adds a new appointment
+	const char *fname		takes a filename as string
+	int aUserID				takes a user ID as integer
+	char *postData			takes post data as string
+	returns					true on success, false on failure
+*/
 bool appointmentAdd(const char *fname, int aUserID, char *postData) {
 	Appointment* appointments = NULL;
 	Appointment* tmpAppointment = NULL;
@@ -141,6 +149,13 @@ bool appointmentAdd(const char *fname, int aUserID, char *postData) {
 	return true;
 }
 
+/*
+	This function changes the data of an existing appointment
+	const char *fname		takes a filename as string
+	int aUserID				takes a user ID as integer
+	char *postData			takes post data as string
+	returns					true on success, false on failure
+*/
 bool appointmentChange(const char *fname, int aUserID, char *postData) {
 	Appointment *appointments;
 	size_t amount = 0;
@@ -218,6 +233,13 @@ bool appointmentChange(const char *fname, int aUserID, char *postData) {
 	return true;
 }
 
+/*
+	This function deletes an appointment
+	const char *fname		takes a filename as string
+	int aUserID				takes a user ID as integer
+	int aID					takes an appointment ID as integer
+	returns					true on success, false on failure
+*/
 bool deleteAppointment(const char *fname, int aUserID, int aID) {
 	Appointment *appointments = NULL;
 	Appointment *tmpAppointment = NULL;

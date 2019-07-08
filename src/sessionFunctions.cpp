@@ -4,10 +4,19 @@
 #include "formFunctions.h"
 #include "sessionFunctions.h"
 
+/*
+	This function returns the alphabet used for "encrypting" sessions
+*/
 const char* getAlphabet() {
 	return "pekRrNfwYTOZsXLbmu0t6l18gIoJqcCB9y2KQixGv57aDhASzn3VFjMWPUEdH4";
 }
 
+/*
+	This function generates the users key which will be stored in a cookie
+	char *username		takes a string
+	int userID			takes an integer
+	returns				an integer
+*/
 int generateCookieKey(char *username, int userID) {
 	int tmpVal = userID;
 
@@ -18,6 +27,13 @@ int generateCookieKey(char *username, int userID) {
 	return tmpVal;
 }
 
+
+/*
+	This function checks if the given cookie data is valid
+	const char *fname	takes a filename as a string
+	char *cookieData	takes a cookie as string
+	returns				true if cookie is valid, false if not
+*/
 bool validateCookie(const char *fname, char *cookieData) {
 	// Get Alphabet for 'encrypting'
 	const char *alphabet = getAlphabet();
@@ -93,6 +109,13 @@ bool validateCookie(const char *fname, char *cookieData) {
 	return true;
 }
 
+/*
+	This function creates a session and writes it to a file
+	const char *fname	takes a filename as string
+	char *username		takes a username as string
+	int userID			takes the user ID as integer
+	returns				true on success, false on failure
+*/
 bool createSession(const char *fname, char *username, int userID) {
 	const char* alphabet = getAlphabet();
 	int tmpVal = generateCookieKey(username, userID);

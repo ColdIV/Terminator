@@ -57,7 +57,6 @@ int main(int argc, char** argv) {
 	} else {
 		// Either no postData sent or
 		// failed to allocate memory, so act as if we had no input
-		// @TODO: Less lazy future me, make it prettier.
 		postData = NULL;
 		contentLen = 0;
 	}
@@ -119,9 +118,6 @@ int main(int argc, char** argv) {
 	Appointment *appointments = NULL;
 	size_t appointmentAmount = 0;
 
-	// @TODO: Delete this (DEBUG)
-	/*std::cout << "Content-type:text/html\r\n\r\n";*/
-
 
 	// Routing
 	if (strcmp(page, "default") == 0 || strcmp(page, "login") == 0 || (!user.loggedIn && strcmp(page, "register") != 0)) {
@@ -158,7 +154,7 @@ int main(int argc, char** argv) {
 				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 			}
 			else {
-				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
+				// Register failed, show error
 				htmlTemplatePart1 = getTemplate(fileTplError);
 			}
 		}

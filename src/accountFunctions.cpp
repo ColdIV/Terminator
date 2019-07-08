@@ -8,6 +8,12 @@
 #include "sessionFunctions.h"
 #include <iostream>
 
+
+/*
+	This function checks if the input length is in a valid range
+	const char *input		takes a string
+	returns					true if the length is valid, false if not
+*/
 bool validateLength(const char *input) {
 	return (strlen(input) > 1 && strlen(input) < 21);
 }
@@ -206,6 +212,13 @@ bool registerUser(const char *fname, const char *sessionFile, char *data) {
 	return false;
 }
 
+/*
+	This function changes the password of a user
+	const char *fname		takes a filename as string
+	int userID				takes a user ID as integer
+	char *data				takes post data as a string
+	returns					true on success, false on failure
+*/
 bool changePassword(const char *fname, int userID, char *data) {
 	Account *accounts = NULL;
 	size_t amount = 0;
