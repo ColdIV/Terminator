@@ -7,6 +7,10 @@
 #include "accountFunctions.h"
 #include <iostream>
 
+bool validateLength(const char *input) {
+	return (strlen(input) > 1 && strlen(input) < 21);
+}
+
 /*
 	This function checks if login credentials are correct
 	const char *fname		takes a filename as string
@@ -16,7 +20,7 @@
 */
 int validateLogin(const char *fname, char *user, char *password) {
 	// Check input length (I don't really care about password, but it should at least be 1 char...)
-	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1) {
+	if (!validateLength(user) || !validateLength(password)) {
 		return 0;
 	}
 
@@ -170,7 +174,7 @@ bool registerUser(const char *fname, char *data) {
 		return false;
 	}
 
-	if (strlen(user) > 20 || strlen(user) < 3 || strlen(password) < 1){
+	if (!validateLength(user) || !validateLength(password)){
 		valuesValid = false;
 	}
 
@@ -242,7 +246,7 @@ bool changePassword(const char *fname, int userID, char *data) {
 		return false;
 	}
 
-	if (strlen(oldPassword) < 1 || strlen(newPassword) < 1 || strlen(newPasswordRepeat) < 1){
+	if (!validateLength(oldPassword) || !validateLength(newPassword) || !validateLength(newPasswordRepeat)) {
 		valuesValid = false;
 	}
 

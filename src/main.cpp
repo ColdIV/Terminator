@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 	const char *fileTplLoginError = "templates/loginError.html";
 	const char *fileTplRegister = "templates/register.html";
 	const char *fileTplMenue = "templates/menue.html";
-
+	const char *fileTplChangePassword = "templates/changePassword.html";
 	const char* fileTplAppointment1 = "templates/showAppointment1.html";
 	const char* fileTplAppointment2 = "templates/showAppointment2.html";
 	const char* fileTplAddAppointment = "templates/addAppointment.html";
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
 			if (login(fileAccounts, postData)) {
 				// Login successfull
 				char *tmpUser = NULL;
-				tmpUser = getValueOfKey(postData, "username");
+				tmpUser = getValueOfKey(postData, (char*)"username");
 				strcpy(user.name, tmpUser);
 
 				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
@@ -147,13 +147,26 @@ int main(int argc, char** argv) {
 				// Register successfull
 				// Auto-Login user
 				char *tmpUser = NULL;
-				tmpUser = getValueOfKey(postData, "username");
+				tmpUser = getValueOfKey(postData, (char*)"username");
 				strcpy(user.name, tmpUser);
 
 				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
+			}
+		}
+	} else if(strcmp(page, "changePassword") == 0) {
+		if (contentLen == 0) {
+			// Show HTML
+			htmlTemplatePart1 = getTemplate(fileTplChangePassword);
+		} else {
+			if (changePassword(fileAccounts, user.id, postData)) {
+				// Successfull, show menu
+				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
+			} else {
+				// Failed to change password, show error
+				htmlTemplatePart1 = getTemplate(fileTplError);
 			}
 		}
 	} else if (strcmp(page, "appointments") == 0) {

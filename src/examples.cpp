@@ -3,6 +3,7 @@
 #include "fileFunctions.h"
 #include "formFunctions.h"
 #include "appointmentFunctions.h"
+#include "accountFunctions.h"
 #include <string.h>
 //
 ///*
@@ -254,34 +255,8 @@
 
 
 int main3() {
-	char buffer[] = "this is a string with an {{id}} in it";
-	char search[] = "{{id}}";
-	char replace[] = "0";
-
-
-	if (search != NULL && replace != NULL) {
-		char *find = strstr(buffer, search);
-		printf("0");
-		char *tmpStr = (char*)malloc(strlen(buffer) * sizeof(char));
-		printf("1");
-		int pos = 0;
-		if (find != NULL && tmpStr != NULL) {
-			printf("3");
-			strcpy(tmpStr, buffer);
-			printf("4");
-			// Store first part (till found word) in buffer
-			pos = find - buffer;
-			printf("5");
-			buffer[pos] = '\0';
-			printf("6");
-			// Append new content
-			strcat(buffer, replace);
-			printf("7");
-			strcat(buffer, (char*)tmpStr + pos + strlen(search));
-			printf("8");
-			std::cout << buffer << std::endl;
-		}
-	}
+	const char *in = "tttttttttttttttttttt";
+	std::cout << validateLength(in) << std::endl;
 
 
 	system("pause");
