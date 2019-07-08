@@ -1,3 +1,4 @@
+#pragma warning( disable : 4996)
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -186,4 +187,85 @@ bool registerUser(const char *fname, char *data) {
 	free(password);
 	free(repeatPassword);
 	return false;
+}
+
+bool changePassword(const char *fname, int userID, char *data) {
+	Account *accounts = NULL;
+	size_t amount = 0;
+
+	char *oldPassword = NULL;
+	char *newPassword = NULL;
+	char *newPasswordRepeat = NULL;
+
+	bool valuesValid = true;
+
+	int userPos = -1;
+
+	// Read accounts
+	accounts = (Account*)readStructs(fname, &amount, sizeof(Account));
+	if (accounts == NULL) {
+		return false;
+	}
+
+	// Find user
+	for (int i = 0; i < amount; i++) {
+		if (accounts[i].id == userID) {
+			userPos = i;
+			break;
+		}
+	}
+
+	if (userPos == -1) {
+		free(accounts);
+		return false;
+	}
+
+
+	oldPassword = getValueOfKey(data, (char*)"oldPassword");
+	if (oldPassword == NULL) {
+		free(accounts);
+		return false;
+	}
+
+	newPassword = getValueOfKey(data, (char*)"newPassword");
+	if (newPassword == NULL) {
+		free(accounts);
+		free(oldPassword);
+		return false;
+	}
+
+	newPasswordRepeat = getValueOfKey(data, (char*)"newPasswordRepeat");
+	if (newPasswordRepeat == NULL) {
+		free(accounts);
+		free(oldPassword);
+		free(newPassword);
+		return false;
+	}
+
+	if (strlen(oldPassword) < 1 || strlen(newPassword) < 1 || strlen(newPasswordRepeat) < 1){
+		valuesValid = false;
+	}
+
+	if (strcmp(newPassword, newPasswordRepeat) != 0) {
+		valuesValid = false;
+	}
+
+	if (!valuesValid || strcmp(accounts[userPos].password, oldPassword) != 0) {
+		free(accounts);
+		free(oldPassword);
+		free(newPassword);
+		free(newPasswordRepeat);
+		return false;
+	}
+
+	strcpy(accounts[userPos].password, newPassword);
+	writeStructs(fname, accounts, amount, sizeof(Account));
+
+
+	free(accounts);
+	free(oldPassword);
+	free(newPassword);
+	free(newPasswordRepeat);
+
+	return true;
 }
