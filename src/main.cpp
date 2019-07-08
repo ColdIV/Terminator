@@ -198,7 +198,7 @@ int main(int argc, char** argv) {
 		if (appointmentEditID == NULL) {
 			htmlTemplatePart1 = getTemplate(fileTplError);
 		} else {
-			htmlTemplatePart1 = getTemplate(fileTplEditAppointment, "{{id}}", appointmentEditID);
+			htmlTemplatePart2 = getTemplate(fileTplEditAppointment);
 		}
 	} else if (strcmp(page, "appointmentEditP") == 0) {
 		if (appointmentChange(fileAppointments, user.id, postData)) {
@@ -235,11 +235,13 @@ int main(int argc, char** argv) {
 	std::cout << "Content-type:text/html\r\n\r\n";
 	char *htmlHead = getTemplate(fileTplHead);
 
-	if (htmlHead == NULL || htmlTemplatePart1 == NULL) {
+	if (htmlHead == NULL || (htmlTemplatePart1 == NULL && htmlTemplatePart2 == NULL)) {
 		std::cout << "Error! Could not find template files." << std::endl;
 	} else {
 		std::cout << htmlHead << std::endl;
-		std::cout << htmlTemplatePart1 << std::endl;
+		if (htmlTemplatePart1 != NULL) {
+			std::cout << htmlTemplatePart1 << std::endl;
+		}
 	}
 
 	if (strcmp(page, "appointments") == 0) {
@@ -259,6 +261,9 @@ int main(int argc, char** argv) {
 								<< "\t<td>" << appointments[i].description << "</td>"								
 								<< "\t<td>"
 								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentEdit\" method=\"post\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"description\" value=\"" << appointments[i].description << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"time\" value=\"" << appointments[i].time << "\">"
+								<< "\t\t\t<input type=\"hidden\" name=\"date\" value=\"" << appointments[i].date << "\">"
 								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
 								<< "\t\t\t<button type=\"submit\"><i class = 'fa fa - pencil'>&Auml;ndern</i></button>"
 								<< "\t\t</form>"
@@ -273,9 +278,88 @@ int main(int argc, char** argv) {
 
 			free(appointments);
 		}
-	} /* else {
-	  // Same for other pages
-	} */
+	} else if ((strcmp(page, "appointmentEdit") == 0) && htmlTemplatePart2 != NULL) {
+		char *appointmentId = NULL;
+		char *appointmentDate = NULL;
+		char *appointmentTime = NULL;
+		char *appointmentDescription = NULL;
+		bool appointmentEditError = false;
+		
+		appointmentId = getValueOfKey(postData, (char*)"id");
+		if (appointmentId == NULL) {
+			appointmentEditError = true;
+		}
+
+		if (!appointmentEditError) {
+			appointmentDate = getValueOfKey(postData, (char*)"date");
+			if (appointmentDate == NULL) {
+				free(appointmentId);
+				appointmentEditError = true;
+			}
+		}
+
+		if (!appointmentEditError) {
+			appointmentTime = getValueOfKey(postData, (char*)"time");
+			if (appointmentTime == NULL) {
+				free(appointmentId);
+				free(appointmentDate);
+				appointmentEditError = true;
+			}
+
+			// Quick fix for time
+			char *tmpTime = NULL;
+			tmpTime = fixTime(appointmentTime);
+
+			if (tmpTime == NULL) {
+				appointmentEditError = true;
+			}
+
+			strcpy(appointmentTime, tmpTime);
+			free(tmpTime);
+		}
+
+		if (!appointmentEditError) {
+			appointmentDescription = getValueOfKey(postData, (char*)"description");
+			if (appointmentDescription == NULL) {
+				free(appointmentId);
+				free(appointmentDate);
+				free(appointmentTime);
+				appointmentEditError = true;
+			}
+		}
+
+		if (!appointmentEditError) {
+			// Show Form
+			std::cout << "<div class='card-body'>"
+				<< "\t<h5 class='card-title text-center'>Termin anlegen</h5>"
+				<< "\t<form action='?page=appointmentEditP' method='post' autocomplete='off'>"
+				<< "\t\t<div class='form-group'>"
+				<< "\t\t\t<label>Datum</label>"
+				<< "\t\t\t<input class='form-control mb-1' id='date' name='date' type='date' value='" << appointmentDate << "' maxlength='10'>"
+				<< "\t\t\t<label>Uhrzeit</label>"
+				<< "\t\t\t<input class='form-control mb-1' id='time' name='time' type='time' value='" << appointmentTime << "' maxlength='4'>"
+				<< "\t\t\t<label>Art</label>"
+				<< "\t\t\t<input type='text' class='form-control' id='art' name='description' value='" << appointmentDescription << "' maxlength='100'>"
+				<< "\t\t\t<input type='hidden' name='id' value='" << appointmentId << "'>"
+				<< "\t\t</div>"
+				<< "\t\t<button type='submit' id='lay_beside' class='btn btn-primary float-right'>Termin&auml;ndern</button>"
+				<< "\t\t<a href='?page=menu'><button type='button' class='btn btn-primary float-left'>Zur&uuml;ck</button></a>"
+				<< "\t</form>";
+
+			free(appointmentId);
+			free(appointmentDate);
+			free(appointmentTime);
+			free(appointmentDescription);
+		} else {
+			// Show Error
+			htmlTemplatePart1 = getTemplate(fileTplError);
+			if (htmlTemplatePart1 != NULL) {
+				std::cout << htmlTemplatePart1 << std::endl;
+			}
+		}
+
+
+	}
 
 	if (htmlTemplatePart2 != NULL) {
 		std::cout << htmlTemplatePart2 << std::endl;

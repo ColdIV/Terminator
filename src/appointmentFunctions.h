@@ -9,6 +9,7 @@ struct Appointment {
 	int appointmentId;
 };
 
+char* fixTime(char *t);
 time_t getTimestamp(char *date, char *time);
 int compare(const void *p1, const void *p2);
 bool appointmentAdd(const char *fname, int aUserID, char *postData);
