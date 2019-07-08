@@ -126,7 +126,11 @@ int main(int argc, char** argv) {
 			// Handle Login (Login should set cookie)
 			if (login(fileAccounts, postData)) {
 				// Login successfull
-				htmlTemplatePart1 = getTemplate(fileTplMenue);
+				char *tmpUser = NULL;
+				tmpUser = getValueOfKey(postData, "username");
+				strcpy(user.name, tmpUser);
+
+				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 			} else {
 				// Login failed, show error
 				htmlTemplatePart1 = getTemplate(fileTplLoginError);
@@ -142,7 +146,11 @@ int main(int argc, char** argv) {
 			if (registerUser(fileAccounts, postData)) {
 				// Register successfull
 				// Auto-Login user
-				htmlTemplatePart1 = getTemplate(fileTplMenue);
+				char *tmpUser = NULL;
+				tmpUser = getValueOfKey(postData, "username");
+				strcpy(user.name, tmpUser);
+
+				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
@@ -150,7 +158,7 @@ int main(int argc, char** argv) {
 		}
 	} else if (strcmp(page, "appointments") == 0) {
 		// Show Appointments HTML (Handling of Appointments below)
-		htmlTemplatePart1 = getTemplate(fileTplAppointment1);
+		htmlTemplatePart1 = getTemplate(fileTplAppointment1, "{{user}}", user.name);
 		htmlTemplatePart2 = getTemplate(fileTplAppointment2);
 	} else if (strcmp(page, "appointmentAdd") == 0) {
 		if (contentLen == 0) {
@@ -159,7 +167,7 @@ int main(int argc, char** argv) {
 		} else {
 			if (appointmentAdd(fileAppointments, user.id, postData)) {
 				// Added appointment, show menu
-				htmlTemplatePart1 = getTemplate(fileTplMenue);
+				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 			} else {
 				// Failed to add appointment, show error
 				htmlTemplatePart1 = getTemplate(fileTplError);
@@ -176,7 +184,7 @@ int main(int argc, char** argv) {
 	} else if (strcmp(page, "appointmentEditP") == 0) {
 		if (appointmentChange(fileAppointments, user.id, postData)) {
 			// Changed appointment, show menu
-			htmlTemplatePart1 = getTemplate(fileTplMenue);
+			htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 		}
 		else {
 			// Failed to change appointment, show error
@@ -189,11 +197,11 @@ int main(int argc, char** argv) {
 		} else {
 			if (deleteAppointment(fileAppointments, user.id, atoi(appointmentDeleteID))) {
 				// Deleted appointment, show menu
-				htmlTemplatePart1 = getTemplate(fileTplMenue);
+				htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 			}
 		}
 	} else if (strcmp(page, "menu") == 0) {
-		htmlTemplatePart1 = getTemplate(fileTplMenue);
+		htmlTemplatePart1 = getTemplate(fileTplMenue, "{{user}}", user.name);
 	} else if (strcmp(page, "logout") == 0) {
 		setCookie("name", (char*)"");
 		setCookie("id", (char*)"");
