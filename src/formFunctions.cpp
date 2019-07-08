@@ -51,14 +51,14 @@ char* getValueOfKey(const char *str, char *key, char separator) {
 
 			for (end = 0; *(str + start + end) && *(str + start + end) != separator; end++);
 
-			tmpStr = (char*)malloc((start + end) * sizeof(char*));
+			tmpStr = (char*)malloc((start + end + 2) * sizeof(char*));
 
 			if (tmpStr == NULL) {
 				return NULL;
 			}
 
 			strcpy(tmpStr, (str + start));
-			tmpStr[end] = '\0';
+			*(tmpStr + end) = '\0';
 
 			return tmpStr;
 		}
