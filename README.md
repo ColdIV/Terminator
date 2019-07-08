@@ -15,8 +15,8 @@ __________________________________________________________________
 - icons überprüfen (ist fa im head.html eingebunden?)
 - ~~HTML Template durchgehen, manche sehen kaputt aus~~
 - ~~Passwort ändern~~
-- Passwort ändern testen
-- Passwort ändern formular template
+- ~~Passwort ändern testen~~
+- ~~Passwort ändern formular template~~
 - ~~Logo einfügen~~
 - Logo positionieren
 - Terminator überschrift unter logo
@@ -25,8 +25,9 @@ __________________________________________________________________
 
 ## Todo nice to have
 - sonderzeichen prüfen (hinzufügen von terminen)
+- ~~max eingabelänge für passwort und nutzername~~
 - Max. Eingabelänge beschränken
-- sessions
+- ~~sessions~~
 - ggf sortieren
 - termin bearbeiten (werte eingefügt haben)
 __________________________________________________________________
@@ -51,7 +52,7 @@ __________________________________________________________________
  
 ### joshua:
 - sortieren (uhrzeit fehlt)
-- sessions
+- ~~sessions~~
 - siehe oben
 - ~~\_CRT_SECURE_NO_WARNINGS entfernen und fehler beheben~~
 - ~~cpp zu schönen header dateien machen (login, )~~
