@@ -5,6 +5,7 @@
 #include "fileFunctions.h"
 #include "formFunctions.h"
 #include "accountFunctions.h"
+#include "sessionFunctions.h"
 #include <iostream>
 
 bool validateLength(const char *input) {
@@ -108,7 +109,7 @@ bool createAccount(const char *fname, char *user, char *password) {
 	char *data				takes data as string
 	returns					true on success, false on failure
 */
-bool login(const char *fname, char *data) {
+bool login(const char *fname, const char *sessionFile, char *data) {
 	char *user = NULL;
 	char *password = NULL;
 	
@@ -129,8 +130,20 @@ bool login(const char *fname, char *data) {
 	if (userID) {
 		userID--;
 		_itoa_s(userID, id, 10);
+
+		int iKey = generateCookieKey(user, userID);
+		char key[100];
+		_itoa_s(iKey, key, 10);
+		
+		if (!createSession(sessionFile, user, userID)) {
+			free(user);
+			free(password);
+			return false;
+		}
+
 		setCookie("id", id);
 		setCookie("name", user);
+		setCookie("key", key);
 
 		free(user);
 		free(password);
@@ -148,7 +161,7 @@ bool login(const char *fname, char *data) {
 	char *data				takes data as string
 	returns					true on success, false on failure
 */
-bool registerUser(const char *fname, char *data) {
+bool registerUser(const char *fname, const char *sessionFile, char *data) {
 	char *user = NULL;
 	char *password = NULL;
 	char *repeatPassword = NULL;
@@ -183,7 +196,7 @@ bool registerUser(const char *fname, char *data) {
 	}
 
 	if (valuesValid && createAccount(fname, user, password)) {
-		login(fname, data);
+		login(fname, sessionFile, data);
 		return true;
 	}
 

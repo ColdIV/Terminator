@@ -10,8 +10,8 @@ struct Account {
 bool validateLength(const char *input);
 int validateLogin(const char *fname, char *user, char *password);
 bool createAccount(const char *fname, char *user, char *password);
-bool login(const char *fname, char *data);
-bool registerUser(const char *fname, char *data);
+bool login(const char *fname, const char *sessionFile, char *data);
+bool registerUser(const char *fname, const char *sessionFile, char *data);
 bool changePassword(const char *fname, int userID, char *data);
 
 #endif

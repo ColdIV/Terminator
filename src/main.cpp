@@ -6,11 +6,12 @@
 #include "formFunctions.h"
 #include "accountFunctions.h"
 #include "appointmentFunctions.h"
+#include "sessionFunctions.h"
 
 
 struct User {
 	int id;
-	char name[20];
+	char name[21];
 	bool loggedIn;
 };
 
@@ -23,6 +24,8 @@ int main(int argc, char** argv) {
 	// Filenames
 	const char *fileAccounts = "accounts.bin";
 	const char *fileAppointments = "appointments.bin";
+	const char *fileSessions = "sessions.bin";
+	// Templates
 	const char *fileTplHead = "templates/head.html";
 	const char *fileTplLogin = "templates/login.html";
 	const char *fileTplLoginError = "templates/loginError.html";
@@ -80,6 +83,8 @@ int main(int argc, char** argv) {
 
 	// Check if user logged in, if yes: create user, else: route to register
 	User user = { 0 };
+	user.loggedIn = false;
+
 	char *cookieUsername = NULL;
 	cookieUsername = getValueOfKey(cookieData, (char*)"name", ';');
 	
@@ -87,27 +92,27 @@ int main(int argc, char** argv) {
 		cookieUsername = (char*)"";
 	}
 
-	// @TODO: Cleanup
-	if (/*strcmp(page, "default") != 0 && strcmp(page, "register") != 0 && (page, "login") != 0 && */strcmp(cookieUsername, "") != 0) {
+	if (strcmp(cookieUsername, "") != 0) {
 		// Create user
-		// @TODO: Check if data is valid, maybe some security stuff. No clue, need sleep.
 		char *userID;
 		userID = getValueOfKey(cookieData, (char*)"id", ';');
 
 		if (userID == NULL) {
 			user.loggedIn = false;
 		} else {
-			user.id = atoi(userID);
-			free(userID);
-			strcpy(user.name, cookieUsername);
-			user.loggedIn = true;
+			if (validateCookie(fileSessions, cookieData)) {
+				user.id = atoi(userID);
+				free(userID);
+				strcpy(user.name, cookieUsername);
+				user.loggedIn = true;
 
-			if (strcmp(page, "default") == 0 || strcmp(page, "register") == 0 || strcmp(page, "login") == 0) {
-				page = (char*)malloc(5 * sizeof(char));
-				strcpy(page, "menu");
+				if (strcmp(page, "default") == 0 || strcmp(page, "register") == 0 || strcmp(page, "login") == 0) {
+					page = (char*)malloc(5 * sizeof(char));
+					strcpy(page, "menu");
+				}
 			}
 		}
-
+		
 	} 
 
 	// Variables we might need later
@@ -124,7 +129,7 @@ int main(int argc, char** argv) {
 			htmlTemplatePart1 = getTemplate(fileTplLogin);
 		} else {
 			// Handle Login (Login should set cookie)
-			if (login(fileAccounts, postData)) {
+			if (login(fileAccounts, fileSessions, postData)) {
 				// Login successfull
 				char *tmpUser = NULL;
 				tmpUser = getValueOfKey(postData, (char*)"username");
@@ -143,7 +148,7 @@ int main(int argc, char** argv) {
 		}
 		else {
 			// Handle Register
-			if (registerUser(fileAccounts, postData)) {
+			if (registerUser(fileAccounts, fileSessions, postData)) {
 				// Register successfull
 				// Auto-Login user
 				char *tmpUser = NULL;
@@ -154,6 +159,7 @@ int main(int argc, char** argv) {
 			}
 			else {
 				// Register failed, show error (@TODO: maybe add error codes, lazy though.)
+				htmlTemplatePart1 = getTemplate(fileTplError);
 			}
 		}
 	} else if(strcmp(page, "changePassword") == 0) {
