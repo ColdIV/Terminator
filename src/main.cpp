@@ -247,6 +247,8 @@ int main(int argc, char** argv) {
 		appointments = (Appointment*)readStructs(fileAppointments, &appointmentAmount, sizeof(Appointment));
 
 		if (appointments != NULL) {
+			qsort((void*)appointments, appointmentAmount, sizeof(Appointment), &compare);
+
 			// Check if User has appointments to show
 			for (int i = 0; i < appointmentAmount; i++) {
 				if (user.id == appointments[i].userId) {

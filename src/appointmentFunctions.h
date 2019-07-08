@@ -9,7 +9,8 @@ struct Appointment {
 	int appointmentId;
 };
 
-bool getDataApp(char* data); 
+time_t getTimestamp(char *date, char *time);
+int compare(const void *p1, const void *p2);
 bool appointmentAdd(const char *fname, int aUserID, char *postData);
 bool appointmentChange(const char *fname, int aUserID, char *postData);
 bool deleteAppointment(const char *fname, int aUserID, int aID);

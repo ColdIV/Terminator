@@ -7,6 +7,57 @@
 #include "accountFunctions.h"
 #include <iostream>
 #include "appointmentFunctions.h"
+#include <time.h>
+
+/*
+	Cover your eyes, this is stupid.
+*/
+char* fixTime(char *t) {
+	char *tmpStr = (char*)malloc(sizeof(char) * 6);
+
+	tmpStr[0] = t[0];
+	tmpStr[1] = t[1];
+	tmpStr[2] = ':';
+	tmpStr[3] = t[5];
+	tmpStr[4] = t[6];
+	tmpStr[5] = '\0';
+
+	return tmpStr;
+}
+
+/*
+	This functions returns an timestamp from a date and time
+	char *date          takes a date as "yyyy-mm-dd"
+	char *time			takes a time as "hh:mm"
+	returns             date as timestamp (comparable with >, <, ==, ...)
+*/
+time_t getTimestamp(char *date, char *time) {
+	tm tmdate = { 0 };
+	tmdate.tm_year = atoi(&date[0]) - 1900;
+	tmdate.tm_mon = atoi(&date[5]) - 1;
+	tmdate.tm_mday = atoi(&date[8]);
+	tmdate.tm_hour = atoi(&time[0]);
+	tmdate.tm_min = atoi(&time[2]);
+	time_t timestamp = mktime(&tmdate);
+
+	return timestamp;
+}
+
+/*
+	This is the compare function for qsort
+
+	Usage:
+		Pass the following as last parameter for qsort:
+		int(*compare)(const void *, const void*)
+*/
+int compare(const void *p1, const void *p2) {
+	time_t t1 = getTimestamp(((Appointment*)p1)->date, ((Appointment*)p1)->time);
+	time_t t2 = getTimestamp(((Appointment*)p2)->date, ((Appointment*)p2)->time);
+
+	if (t1 < t2) return -1;
+	if (t1 > t2) return 1;
+	return 0;
+}
 
 bool appointmentAdd(const char *fname, int aUserID, char *postData) {
 	Appointment* appointments = NULL;
@@ -69,6 +120,18 @@ bool appointmentAdd(const char *fname, int aUserID, char *postData) {
 		strcpy(appointments[amount].description, aDescription);
 	}
 
+	// Quick fix for time
+	char *tmpTime = NULL;
+	tmpTime = fixTime(appointments[amount].time);
+
+	if (tmpTime == NULL) {
+		return false;
+	}
+
+	strcpy(appointments[amount].time, tmpTime);
+	free(tmpTime);
+
+
 	writeStructs((char*)fname, appointments, amount + 1, sizeof(Appointment));
 	
 	free(aDate);
@@ -130,6 +193,18 @@ bool appointmentChange(const char *fname, int aUserID, char *postData) {
 			strcpy(appointments[i].date, aDate);
 			strcpy(appointments[i].time, aTime);
 			strcpy(appointments[i].description, aDescription);
+
+			// Quick fix for time
+			char *tmpTime = NULL;
+			tmpTime = fixTime(appointments[i].time);
+
+			if (tmpTime == NULL) {
+				return false;
+			}
+
+			strcpy(appointments[i].time, tmpTime);
+			free(tmpTime);
+
 			break;
 		}
 	}
