@@ -11,7 +11,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 
 __________________________________________________________________
 ## Todo
-- HTML Terminausgabe ist sieht kaputt aus (tabelle sieht kacke aus)
+- HTML Terminausgabe ist kaputt (tabelle sieht kacke aus)
 - icons überprüfen (ist fa im head.html eingebunden?)
 - ~~HTML Template durchgehen, manche sehen kaputt aus~~
 - ~~Passwort ändern~~
@@ -29,7 +29,7 @@ __________________________________________________________________
 - Max. Eingabelänge beschränken
 - ~~sessions~~
 - ~~ggf sortieren~~
-- termin bearbeiten (werte eingefügt haben)
+- ~~termin bearbeiten (werte eingefügt haben)~~
 __________________________________________________________________
 ## Aufgaben:
   
