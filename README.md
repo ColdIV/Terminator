@@ -28,7 +28,7 @@ __________________________________________________________________
 - ~~max eingabelänge für passwort und nutzername~~
 - Max. Eingabelänge beschränken
 - ~~sessions~~
-- ggf sortieren
+- ~~ggf sortieren~~
 - termin bearbeiten (werte eingefügt haben)
 __________________________________________________________________
 ## Aufgaben:
@@ -51,7 +51,7 @@ __________________________________________________________________
 - ~~glaub das war alles, ansonsten ergänz ichs xD
  
 ### joshua:
-- sortieren (uhrzeit fehlt)
+- ~~sortieren (uhrzeit fehlt)~~
 - ~~sessions~~
 - siehe oben
 - ~~\_CRT_SECURE_NO_WARNINGS entfernen und fehler beheben~~
