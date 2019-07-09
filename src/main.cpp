@@ -333,7 +333,7 @@ int main(int argc, char** argv) {
 				<< "\t\t\t<input class='form-control mb-1' id='date' name='date' type='date' value='" << appointmentDate << "' maxlength='10' required>"
 				<< "\t\t\t<label>Uhrzeit</label>"
 				<< "\t\t\t<input class='form-control mb-1' id='time' name='time' type='time' value='" << appointmentTime << "' maxlength='4' required>"
-				<< "\t\t\t<label>Art</label>"
+				<< "\t\t\t<label>Beschreibung</label>"
 				<< "\t\t\t<input type='text' class='form-control' id='art' name='description' value='" << appointmentDescription << "' maxlength='20' required>"
 				<< "\t\t\t<input type='hidden' name='id' value='" << appointmentId << "'>"
 				<< "\t\t</div>"
