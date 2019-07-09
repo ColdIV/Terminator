@@ -3,5 +3,9 @@
             </div>
         </div>
     </div>
+<script>
+    var all = document.getElementsByTagName("form");
+    all[0].innerHTML = decodeURIComponent(all[0].innerHTML).replace(/\+/g, " ");
+</script>
 </body>
 </html>
