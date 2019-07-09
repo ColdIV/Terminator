@@ -326,7 +326,7 @@ int main(int argc, char** argv) {
 		if (!appointmentEditError) {
 			// Show Form
 			std::cout << "<div class='card-body'>"
-				<< "\t<h5 class='card-title text-center'>Termin anlegen</h5>"
+				<< "\t<h5 class='card-title text-center'>Termin &auml;ndern</h5>"
 				<< "\t<form action='?page=appointmentEditP' method='post' autocomplete='off'>"
 				<< "\t\t<div class='form-group'>"
 				<< "\t\t\t<label>Datum</label>"
