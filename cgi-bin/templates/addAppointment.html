@@ -4,11 +4,11 @@
                            <form action="?page=appointmentAdd" method="post" autocomplete="off">
                             <div class="form-group">
                             <label>Datum</label>
-                           <input class="form-control mb-1" id="date" name="date" type="date"  maxlength="10">
+                           <input class="form-control mb-1" id="date" name="date" type="date"  maxlength="10" required>
                            <label>Uhrzeit</label>
-                           <input class="form-control mb-1" id="time" name="time" type="time" maxlength="4">
+                           <input class="form-control mb-1" id="time" name="time" type="time" maxlength="4" required>
                            <label>Art</label>
-                           <input type="text" class="form-control" id="description" name="description" maxlength="20">
+                           <input type="text" class="form-control" id="description" name="description" maxlength="20" required>
                             </div>
 				    <button type="submit" id="lay_beside" class="btn btn-primary float-right">Termin anlegen</button>
                             <a href="?page=menu"><button type="button" class="btn btn-primary float-left">Zurück</button></a>
