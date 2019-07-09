@@ -12,16 +12,16 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 __________________________________________________________________
 ## Todo
 - HTML Terminausgabe ist kaputt (tabelle sieht kacke aus)
-- icons überprüfen (ist fa im head.html eingebunden?)
+- ~~icons überprüfen (ist fa im head.html eingebunden?)~~
 - ~~HTML Template durchgehen, manche sehen kaputt aus~~
 - ~~Passwort ändern~~
 - ~~Passwort ändern testen~~
 - ~~Passwort ändern formular template~~
 - ~~Logo einfügen~~
-- Logo positionieren
-- Terminator überschrift unter logo
-- terminator zitate einfügen (z.b. logout -> hasta la vista baby)
-- Buttons und Links rot einfärben (generell blau zu rot)
+- ~~Logo positionieren~~
+- ~~Terminator überschrift unter logo~~
+- ~~terminator zitate einfügen (z.b. logout -> hasta la vista baby)~~
+- ~~Buttons und Links rot einfärben (generell blau zu rot)~~
 
 ## Todo nice to have
 - sonderzeichen prüfen (hinzufügen von terminen)
