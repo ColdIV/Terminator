@@ -261,11 +261,11 @@ int main(int argc, char** argv) {
 								<< "\t\t\t<input type=\"hidden\" name=\"time\" value=\"" << appointments[i].time << "\">"
 								<< "\t\t\t<input type=\"hidden\" name=\"date\" value=\"" << appointments[i].date << "\">"
 								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
-								<< "\t\t\t<button type=\"submit\"><i class = 'fa fa - pencil'>&Auml;ndern</i></button>"
+								<< "\t\t\t<button class='btn btn-primary' type=\"submit\"><i class = 'fa fa-pencil'>&Auml;ndern</i></button>"
 								<< "\t\t</form>"
 								<< "\t\t<form class=\"d-inline\" action=\"?page=appointmentDelete\" method=\"post\">"
 								<< "\t\t\t<input type=\"hidden\" name=\"id\" value=\"" << appointments[i].appointmentId << "\">"
-								<< "<button type=\"submit\"><i class = 'fa fa - trash'>l&ouml;schen</i></button>"
+								<< "<button class='btn btn-primary' type=\"submit\"><i class = 'fa fa-trash'>L&ouml;schen</i></button>"
 								<< "\t\t</form>"
 								<< "\t</td>"
 								<< "</tr>";
