@@ -11,7 +11,7 @@ In diesen Ordner kommen die \*.cpp und \*.h Dateien
 
 __________________________________________________________________
 ## Todo
-- HTML Terminausgabe ist kaputt (tabelle sieht kacke aus)
+~~- HTML Terminausgabe ist kaputt (tabelle sieht kacke aus)~~
 - ~~icons überprüfen (ist fa im head.html eingebunden?)~~
 - ~~HTML Template durchgehen, manche sehen kaputt aus~~
 - ~~Passwort ändern~~
@@ -34,8 +34,8 @@ __________________________________________________________________
 ## Aufgaben:
   
 ### Wassi:
-- priorität: icons, terminausgabe, logo, überschrift, ... rest
-- logo, überschrift (terminator), buttons, ...
+~~- priorität: icons, terminausgabe, logo, überschrift, ... rest~~
+~~- logo, überschrift (terminator), buttons, ...~~
 - siehe oben
 - ~~appointments und nutzer brauchen eine id um die appointments den nutzern zuzuordnen~~
 - ~~strukturen login / termin (liste)~~
